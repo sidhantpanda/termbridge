@@ -1,23 +1,13 @@
 import React from 'react';
 import Terminal from '../components/Terminal';
-import { Box, Flex, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Heading, Spacer } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <Flex dir="column">
-
-      <Flex>
-        <Terminal host="rpi3a" />
-        <Terminal host="rpi3b" />
-        <Terminal host="rpi4a" />
-        {/* </Box> */}
-      </Flex>
-      <Flex>
-        <Terminal host="rpi4b" />
-        <Terminal host="rpi5a" />
-        <Terminal host="ubuntu-1" />
-        {/* </Box> */}
-      </Flex>
+    <Flex direction="column">
+      <Heading>Home Page</Heading>
+      <Link to="/terminals">All Terminals</Link>
     </Flex>
   );
 };

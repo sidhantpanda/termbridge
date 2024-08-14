@@ -25,7 +25,7 @@ const TerminalContainer = ({ host }: TerminalContainerProps) => {
       const data = JSON.parse(lastMessage.data);
       if (data.action === 'data') {
         terminal.write(data.data);
-        fitAddon.fit();
+        // fitAddon.fit();
         // terminal.clear();
       }
     }
@@ -51,7 +51,7 @@ const TerminalContainer = ({ host }: TerminalContainerProps) => {
   useEffect(() => {
 
     const handleResize = () => {
-      fitAddon.fit();
+      // fitAddon.fit();
     };
 
     window.addEventListener('resize', handleResize);
