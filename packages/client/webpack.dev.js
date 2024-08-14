@@ -7,6 +7,7 @@ module.exports = merge(common, {
   devServer: {
     static: './dist',
     port: 3000, // Add your desired port number here
+    historyApiFallback: true
   },
   optimization: {
     runtimeChunk: 'single',
