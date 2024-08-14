@@ -22,7 +22,7 @@ wss.on('connection', function connection(ws) {
       const conn = new Client();
       conn.on('ready', () => {
         ws.send(JSON.stringify({ action: 'status', message: 'Connected' }));
-        conn.shell((err, stream) => {
+        conn.shell({ term: 'xterm-256color' }, (err, stream) => {
           if (err) throw err;
           stream.on('data', (data: { toString: () => any; }) => {
             ws.send(JSON.stringify({ action: 'data', data: data.toString() }));
