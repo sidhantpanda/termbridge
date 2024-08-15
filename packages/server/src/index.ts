@@ -1,9 +1,10 @@
 import express from 'express';
 import http from 'http';
 import WebSocket from 'ws';
-import { Client, ClientChannel } from 'ssh2';
+import { Client } from 'ssh2';
 import path from 'path';
 import { hostsConfig } from './secret';
+import router from './routes';
 
 const app = express();
 const server = http.createServer(app);
@@ -14,6 +15,7 @@ console.log({ currentDir });
 const publicDir = path.join(currentDir, 'public');
 
 app.use(express.static(publicDir));
+app.use('/api', router);
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
