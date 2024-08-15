@@ -3,6 +3,8 @@ import WebSocket from 'ws';
 import { Client } from 'ssh2';
 import RemoteHosts from './model/RemoteHosts';
 
+// https://chatgpt.com/share/609b8f6b-8286-4536-83ba-6df7eff9adfa
+
 export const startWsServer = (server: Server) => {
   const wss = new WebSocket.Server({ server });
   wss.on('connection', function connection(ws) {
