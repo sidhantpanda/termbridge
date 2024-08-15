@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 const Terminal = () => {
   const { host } = useParams();
   return (
-    <TerminalContainer host={host} h="500px" />
+    <TerminalContainer hostName={host} h="500px" />
   );
 };
 

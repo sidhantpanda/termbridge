@@ -8,7 +8,7 @@ import { FitAddon } from '@xterm/addon-fit';
 import { Flex, FlexProps } from '@chakra-ui/react';
 
 interface TerminalContainerProps extends FlexProps {
-  host: string;
+  hostName: string;
 }
 
 function useWindowSize() {
@@ -43,7 +43,7 @@ function useWindowSize() {
 }
 
 
-const TerminalContainer = ({ host, ...rest }: TerminalContainerProps) => {
+const TerminalContainer = ({ hostName, ...rest }: TerminalContainerProps) => {
   const { width, height } = useWindowSize();
   const [terminalId] = useState(v4());
   const [terminal, setTerminal] = useState<Terminal | null>();
@@ -119,10 +119,10 @@ const TerminalContainer = ({ host, ...rest }: TerminalContainerProps) => {
 
       sendMessage(JSON.stringify({
         action: 'connect',
-        host
+        hostName
       }));
       // terminal.input('clear\n');
-      terminal.write('Connecting to ' + host + '...\r\n');
+      terminal.write('Connecting to ' + hostName + '...\r\n');
     }
   }, [readyState]);
 

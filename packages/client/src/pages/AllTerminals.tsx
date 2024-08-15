@@ -7,14 +7,14 @@ const AllTerminals = () => {
     <Flex direction="column" w="full" h="full">
 
       <Flex w="full" h="500px" >
-        <Terminal host="rpi3a" />
-        <Terminal host="rpi3b" />
-        <Terminal host="rpi4a" />
+        <Terminal hostName="rpi3a" />
+        <Terminal hostName="rpi3b" />
+        <Terminal hostName="rpi4a" />
         {/* </Box> */}
       </Flex>
       <Flex w="full" h="500px" >
-        <Terminal host="rpi4b" />
-        <Terminal host="rpi5a" />
+        <Terminal hostName="rpi4b" />
+        <Terminal hostName="rpi5a" />
         {/* <div>f</div> */}
         {/* <Terminal host="ubuntu-1" /> */}
         {/* </Box> */}

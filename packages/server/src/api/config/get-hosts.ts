@@ -10,10 +10,10 @@ const getHosts: RequestHandler = async (req: Request, res) => {
   const toReturn: RemoteHost[] = hosts.map((host) => {
     return {
       _id: host._id.toString(),
-      name: host.name!,
-      host: host.host!,
+      name: host.name,
+      host: host.host,
     };
-  });
+  }).sort((a, b) => a.name.localeCompare(b.name));
 
   res.send({ hosts: toReturn });
 };
