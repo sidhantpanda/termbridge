@@ -9,8 +9,7 @@
     "client:build": "cd packages/client && yarn build"
   },
   "workspaces": [
-    "packages/server",
-    "packages/client"
+    "packages/*"
   ],
   "dependencies": {
     "concurrently": "^8.2.2"
