@@ -8,7 +8,8 @@ module.exports = {
   entry: './src/index.tsx',
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html'
+      template: './public/index.html',
+      publicPath: '/',
     }),
   ],
   resolve: {

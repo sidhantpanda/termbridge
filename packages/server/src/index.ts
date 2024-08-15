@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
 import WebSocket from 'ws';
-import { Client } from 'ssh2';
+import { Client, ClientChannel } from 'ssh2';
 import path from 'path';
 import { hostsConfig } from './secret';
 
@@ -31,6 +31,9 @@ wss.on('connection', function connection(ws) {
             const msg = JSON.parse(message as unknown as string);
             if (msg.action === 'input') {
               stream.write(msg.data);
+            }
+            if (msg.action === 'resize') {
+              stream.setWindow(data.rows, data.cols, data.height, data.width);
             }
           });
         });

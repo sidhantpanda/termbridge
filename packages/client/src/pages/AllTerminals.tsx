@@ -1,21 +1,22 @@
 import React from 'react';
-import Terminal from '../components/Terminal';
+import Terminal from '../components/TerminalContainer';
 import { Box, Flex, Spacer } from '@chakra-ui/react';
 
 const AllTerminals = () => {
   return (
-    <Flex direction="column">
+    <Flex direction="column" w="full" h="full">
 
-      <Flex>
+      <Flex w="full" h="500px" >
         <Terminal host="rpi3a" />
         <Terminal host="rpi3b" />
         <Terminal host="rpi4a" />
         {/* </Box> */}
       </Flex>
-      <Flex>
+      <Flex w="full" h="500px" >
         <Terminal host="rpi4b" />
         <Terminal host="rpi5a" />
-        <Terminal host="ubuntu-1" />
+        {/* <div>f</div> */}
+        {/* <Terminal host="ubuntu-1" /> */}
         {/* </Box> */}
       </Flex>
     </Flex>

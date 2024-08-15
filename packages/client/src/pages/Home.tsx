@@ -1,5 +1,5 @@
 import React from 'react';
-import Terminal from '../components/Terminal';
+import Terminal from '../components/TerminalContainer';
 import { Box, Flex, Heading, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
