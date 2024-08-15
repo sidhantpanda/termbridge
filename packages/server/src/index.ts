@@ -7,6 +7,14 @@ import { hostsConfig } from './secret';
 import router from './routes';
 
 const app = express();
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
@@ -16,6 +24,9 @@ const publicDir = path.join(currentDir, 'public');
 
 app.use(express.static(publicDir));
 app.use('/api', router);
+
+// Disable CORS
+
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
