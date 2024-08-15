@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import { startServer } from './server';
 import { startWsServer } from './server-ws';
 
