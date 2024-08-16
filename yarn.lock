@@ -1733,6 +1733,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/icons@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@chakra-ui/icons@npm:2.1.1"
+  dependencies:
+    "@chakra-ui/icon": "npm:3.2.0"
+  peerDependencies:
+    "@chakra-ui/system": ">=2.0.0"
+    react: ">=18"
+  checksum: 10c0/36c94df62216f7445e49dfec98363f4c836e154ba118e6c446e774cade6f9e0e04c33a62fbe2ff9de26eb87f6a3ee805f8c7fd2ddc82c8ef2744994443a83b33
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/image@npm:2.1.0":
   version: 2.1.0
   resolution: "@chakra-ui/image@npm:2.1.0"
@@ -3014,6 +3026,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.2"
     "@babel/preset-react": "npm:^7.24.7"
     "@babel/preset-typescript": "npm:^7.24.7"
+    "@chakra-ui/icons": "npm:^2.1.1"
     "@chakra-ui/react": "npm:^2.8.2"
     "@emotion/react": "npm:^11.13.0"
     "@emotion/styled": "npm:^11.13.0"
@@ -3036,6 +3049,7 @@ __metadata:
     postcss-loader: "npm:^8.1.1"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
+    react-icons: "npm:^5.3.0"
     react-router-dom: "npm:^6.25.1"
     react-use-websocket: "npm:^4.8.1"
     style-loader: "npm:^4.0.0"
@@ -3056,6 +3070,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@termbridge/common@workspace:packages/common"
   dependencies:
+    "@types/ssh2": "npm:^1.15.1"
+    nano: "npm:^10.1.4"
+    ssh2: "npm:^1.15.0"
     typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
@@ -7234,6 +7251,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/0df78f5b3367514b3443802f46ab5f12f583c823c9b885841b2ae99af7bd8871d85904ca47ccc767855684ee23cb63ed6f6b96cc7dcd37a594e9eece142706e7
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "react-icons@npm:5.3.0"
+  peerDependencies:
+    react: "*"
+  checksum: 10c0/a53af0de558f0e2bacfbafc973aa8ca1e6a429006a2f83d70becad5be431726a691e096336c95949bb0d967587b145264c5046d2bc1518969dbae731855d0712
   languageName: node
   linkType: hard
 

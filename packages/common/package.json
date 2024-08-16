@@ -9,6 +9,11 @@
     "postinstall": "yarn build"
   },
   "devDependencies": {
+    "@types/ssh2": "^1.15.1",
     "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "nano": "^10.1.4",
+    "ssh2": "^1.15.0"
   }
 }

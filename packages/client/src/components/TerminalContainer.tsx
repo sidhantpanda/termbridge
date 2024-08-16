@@ -123,7 +123,7 @@ const TerminalContainer = ({ id, name, ...rest }: TerminalContainerProps) => {
         id
       }));
       // terminal.input('clear\n');
-      terminal.write('Connecting to ' + name + '...\r\n');
+      terminal.write('Connecting to ' + name + ' (' + id + ')...\r\n');
     }
   }, [readyState]);
 

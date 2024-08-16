@@ -3,7 +3,9 @@ import { getDb } from '.';
 
 export const REMOTE_HOSTS_DB_NAME = 'remote_hosts';
 
-export interface RemoteHostDoc extends ConnectConfig {
+type ConnectConfigPartial = Omit<ConnectConfig, 'debug' | 'hostVerifier'>;
+
+export interface RemoteHostDoc extends ConnectConfigPartial {
   name: string;
 }
 

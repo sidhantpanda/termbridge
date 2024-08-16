@@ -1,19 +1,19 @@
 import React from 'react';
 import Terminal from '../components/TerminalContainer';
-import { Box, Button, Card, Center, Flex, Heading, Spacer } from '@chakra-ui/react';
+import { Box, Button, Card, Center, Flex, Heading, Icon, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { FaServer } from "react-icons/fa6";
 import useRemoteHosts from '../hooks/useRemoteHosts';
+import HostCard from '../components/HostCard';
+
 
 const Home = () => {
   const { hosts, isLoading, isFetching, isError, error } = useRemoteHosts();
 
   const hostTerminalLinks = hosts?.map((host) => (
-    <Card key={host.name} p={2} m={2}>
-      <Link to={`/terminal/${host.name}-${host._id}`}>
-        {host.name}
-      </Link>
-    </Card>
+    <HostCard key={host._id} hostConfig={host} />
   ));
+
   return (
     <>
       <Center>
