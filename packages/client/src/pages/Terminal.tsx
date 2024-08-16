@@ -1,5 +1,5 @@
 import React from 'react';
-import TerminalContainer from '../components/TerminalContainer';
+import TerminalContainer from '../components/Terminal/TerminalContainer';
 import { useParams } from 'react-router-dom';
 
 const Terminal = () => {
