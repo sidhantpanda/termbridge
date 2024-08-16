@@ -32,7 +32,7 @@ const IconText = ({ icon, text }: IconTextProps) => {
 const HostCard = ({ hostConfig }: HostCardProps) => {
   const { _id, name, host, username } = hostConfig;
   return (
-    <Link to={`remotes/${name}-${_id}/terminal`}>
+    <Link to={`remotes/${_id}-${name}/terminal`}>
       <Card key={name} p={2}>
         <Flex direction="row" >
           <Center p="6px">
