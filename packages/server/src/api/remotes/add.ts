@@ -25,15 +25,19 @@ const addRemote: RequestHandler = async (req: Request<{}, {}, AddRemoteHostReque
 
   try {
     await isConnectionValid({ host, port, username, password });
-    res.status(200).send({ message: 'Connection successful' });
+    const saved = await RemoteHosts.insert({ name, host, port, username, password });
+    console.log(saved);
+
+    res.send({
+      message: 'saved', remote: {
+        ...saved,
+        password: undefined,
+        privateKey: undefined,
+      }
+    });
   } catch (err) {
     res.status(400).send({ error: err });
   }
-
-  const saved = await RemoteHosts.insert({ name, host, port, username, password });
-  console.log(saved);
-
-  res.send({ message: 'saved', remote: saved });
 };
 
 export default addRemote;

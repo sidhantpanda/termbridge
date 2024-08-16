@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRemoteHosts } from '../api/config/get-remote-hosts';
+import { getAllRemotes } from '../api/remotes/all';
 
 const getRemoteHostsKey = ['api', 'remotes', 'all'];
 
 const useRemoteHosts = () => {
   const { data, ...rest } = useQuery({
     queryKey: getRemoteHostsKey,
-    queryFn: getRemoteHosts,
+    queryFn: getAllRemotes,
   });
 
   return {
