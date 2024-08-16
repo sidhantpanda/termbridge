@@ -1,17 +1,16 @@
 import { Request, RequestHandler } from 'express';
-import RemoteHosts from '../../model/RemoteHosts';
 import { RemoteHost } from '@termbridge/common';
+import RemoteHosts from '../../couchdb/RemoteHosts';
+// import { getAllRemoteHosts } from '../../couchdb/RemoteHosts';
 
 const getHosts: RequestHandler = async (req: Request, res) => {
-  // const hosts = await getRemoteHosts();
-
-  const hosts = await RemoteHosts.find();
-
-  const toReturn: RemoteHost[] = hosts.map((host) => {
+  const all = await RemoteHosts.list({ include_docs: true });
+  // const hosts = await getAllRemoteHosts();
+  const toReturn: RemoteHost[] = all.rows.map((row) => {
     return {
-      _id: host._id.toString(),
-      name: host.name,
-      host: host.host,
+      _id: row.doc!._id,
+      name: row.doc!.name,
+      host: row.doc!.host,
     };
   }).sort((a, b) => a.name.localeCompare(b.name));
 

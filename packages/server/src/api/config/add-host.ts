@@ -1,7 +1,7 @@
 import { Request, RequestHandler } from 'express';
 import Joi from 'joi';
 import { AddRemoteHostRequest } from '@termbridge/common';
-import RemoteHosts from '../../model/RemoteHosts';
+import RemoteHosts from '../../couchdb/RemoteHosts';
 
 const addHostSchema = Joi.object({
   name: Joi.string().required(),
@@ -21,8 +21,8 @@ const addHost: RequestHandler = async (req: Request<{}, {}, AddRemoteHostRequest
   }
 
   const { name, host, port, username, password } = body;
-  const remoteHost = new RemoteHosts({ name, host, port, username, password });
-  const saved = await remoteHost.save();
+  const saved = await RemoteHosts.insert({ name, host, port, username, password });
+  console.log(saved);
 
   res.send({ success: true });
 };
