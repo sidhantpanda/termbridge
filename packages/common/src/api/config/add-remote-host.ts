@@ -3,5 +3,5 @@ export interface AddRemoteHostRequest {
   host: string,
   port: number,
   username: string,
-  password: String,
+  password: string,
 }

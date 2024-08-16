@@ -17,7 +17,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/terminals" element={<AllTerminals />} />
-            <Route path="/terminal/:host" element={<Terminal />} />
+            <Route path="/terminal/:id_host" element={<Terminal />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </Router>

@@ -3,9 +3,10 @@ import TerminalContainer from '../components/TerminalContainer';
 import { useParams } from 'react-router-dom';
 
 const Terminal = () => {
-  const { host } = useParams();
+  const { id_host } = useParams();
+  const [name, id] = id_host.split('-');
   return (
-    <TerminalContainer hostName={host} h="500px" />
+    <TerminalContainer id={id} name={name} h="100vh" w="100vw" />
   );
 };
 
