@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Center, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 import { RemoteHost } from '@termbridge/common';
 import { Link } from 'react-router-dom';
-import { FaServer, FaNetworkWired, FaUser } from 'react-icons/fa6';
+import { FaUser } from 'react-icons/fa6';
 import { GiServerRack } from 'react-icons/gi';
 import { GrServerCluster, GrServer } from 'react-icons/gr';
 import { IconType } from 'react-icons';
