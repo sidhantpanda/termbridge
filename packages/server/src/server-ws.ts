@@ -1,7 +1,7 @@
 import { Server } from 'http';
 import WebSocket from 'ws';
-import { Client } from 'ssh2';
 import RemoteHosts from './couchdb/RemoteHosts';
+import { startTerminalSession } from './lib/ssh';
 
 // https://chatgpt.com/share/609b8f6b-8286-4536-83ba-6df7eff9adfa
 
@@ -11,8 +11,6 @@ export const startWsServer = (server: Server) => {
     ws.on('message', async function incoming(message) {
       const data = JSON.parse(message as unknown as string);
       if (data.action === 'connect') {
-        const conn = new Client();
-        // const hostConfig = await RemoteHosts.findById(data.id);
         const hostConfig = await RemoteHosts.get(data.id);
         if (!hostConfig) {
           ws.send(JSON.stringify({
@@ -24,32 +22,20 @@ export const startWsServer = (server: Server) => {
             }, null, 2)
           }));
         } else {
-          conn.on('ready', () => {
-            ws.send(JSON.stringify({ action: 'status', message: 'Connected' }));
-            conn.shell({ term: 'xterm-256color' }, (err, stream) => {
-              if (err) throw err;
-              stream.on('data', (data: { toString: () => any; }) => {
-                ws.send(JSON.stringify({
-                  action: 'data',
-                  data: data.toString()
-                }));
-              });
-              ws.on('message', (message) => {
-                const msg = JSON.parse(message as unknown as string);
-                if (msg.action === 'input') {
-                  stream.write(msg.data);
-                }
-                if (msg.action === 'resize') {
-                  stream.setWindow(data.rows, data.cols, data.height, data.width);
-                }
-              });
-            });
-
-          }).connect({
-            host: hostConfig.host,
-            port: hostConfig.port,
-            username: hostConfig.username,
-            password: hostConfig.password,
+          const terminalSession = await startTerminalSession(hostConfig, (data: string) => {
+            ws.send(JSON.stringify({
+              action: 'data',
+              data
+            }));
+          });
+          ws.on('message', (message) => {
+            const msg = JSON.parse(message as unknown as string);
+            if (msg.action === 'input') {
+              terminalSession.write(msg.data);
+            }
+            if (msg.action === 'resize') {
+              terminalSession.resize(msg.cols, msg.rows, msg.width, msg.height);
+            }
           });
         }
       }
