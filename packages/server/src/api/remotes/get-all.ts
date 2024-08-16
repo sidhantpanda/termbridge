@@ -2,7 +2,7 @@ import { Request, RequestHandler } from 'express';
 import { RemoteHost } from '@termbridge/common';
 import RemoteHosts from '../../couchdb/RemoteHosts';
 
-const getHosts: RequestHandler = async (req: Request, res) => {
+const getRemotes: RequestHandler = async (req: Request, res) => {
   const all = await RemoteHosts.list({ include_docs: true });
 
   const toReturn: RemoteHost[] = all.rows.map((row) => {
@@ -16,4 +16,4 @@ const getHosts: RequestHandler = async (req: Request, res) => {
   res.send({ hosts: toReturn });
 };
 
-export default getHosts;
+export default getRemotes;

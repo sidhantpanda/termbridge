@@ -1,7 +1,8 @@
 import { Request, RequestHandler } from 'express';
 import Joi from 'joi';
 import { AddRemoteHostRequest } from '@termbridge/common';
-import RemoteHosts from '../../couchdb/RemoteHosts';
+import { Client } from 'ssh2';
+import { isConnectionValid } from '../../lib/ssh';
 
 const addHostSchema = Joi.object({
   name: Joi.string().required(),
@@ -11,7 +12,7 @@ const addHostSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-const addHost: RequestHandler = async (req: Request<{}, {}, AddRemoteHostRequest>, res) => {
+const addRemoteTest: RequestHandler = async (req: Request<{}, {}, AddRemoteHostRequest>, res) => {
   const body = req.body;
   const result = addHostSchema.validate(body);
 
@@ -21,10 +22,15 @@ const addHost: RequestHandler = async (req: Request<{}, {}, AddRemoteHostRequest
   }
 
   const { name, host, port, username, password } = body;
-  const saved = await RemoteHosts.insert({ name, host, port, username, password });
-  console.log(saved);
+  // const saved = await RemoteHosts.insert({ name, host, port, username, password });
+  // console.log(saved);
 
-  res.send({ success: true });
+  try {
+    await isConnectionValid({ host, port, username, password });
+    res.status(200).send({ message: 'Connection successful' });
+  } catch (err) {
+    res.status(400).send({ error: err });
+  }
 };
 
-export default addHost;
+export default addRemoteTest;
