@@ -8,6 +8,7 @@ import { IconType } from 'react-icons';
 import { BsHddNetwork } from "react-icons/bs";
 import { GoTerminal, GoPencil } from "react-icons/go";
 import { IoTrashOutline } from "react-icons/io5";
+import { useRemoveRemote } from '../hooks/mutations/useRemoveRemote';
 
 
 export interface HostCardProps {
@@ -32,6 +33,16 @@ const IconText = ({ icon, text }: IconTextProps) => {
 
 const HostCard = ({ hostConfig }: HostCardProps) => {
   const { _id, name, host, username, port } = hostConfig;
+
+  const { removeRemote, isPending } = useRemoveRemote();
+
+  const habdleRemoveRemote = () => {
+    if (confirm(`Are you sure you want to remove ${name}?`)) {
+      console.log(`Removing ${name}`);
+      removeRemote({ id: _id });
+    }
+  }
+
   return (
     <Card p={2}>
       <Flex direction="row" >
@@ -56,7 +67,7 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
             <Text fontSize='xs' ml="2px">Edit</Text>
           </Button>
         </Link>
-        <Button variant='ghost' color="red.300" leftIcon={<Icon boxSize={3} as={IoTrashOutline} />}>
+        <Button isLoading={isPending} onClick={() => { habdleRemoveRemote() }} variant='ghost' color="red.300" leftIcon={<Icon boxSize={3} as={IoTrashOutline} />}>
           <Text fontSize='xs' ml="2px">Remove</Text>
         </Button>
         <Link to={`remotes/${_id}-${name}/terminal`}>

@@ -1,19 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { addRemoteHost } from '../../api/remotes/add'
+import { removeRemote } from '../../api/remotes/remove';
 import { getAllRemoteHostsKey } from '../useRemoteHosts';
+import { getRemoteHostsByIdKey } from '../useRemoteHostById';
 
-export const useAddRemoteHost = () => {
+export const useRemoveRemote = () => {
   const queryClient = useQueryClient();
   const { mutateAsync, ...rest } = useMutation({
-    mutationFn: addRemoteHost,
-    onSettled: () => {
+    mutationFn: removeRemote,
+    onSettled: (_data, _error, variables, _context) => {
       queryClient.refetchQueries({
         queryKey: getAllRemoteHostsKey,
       });
     }
   });
   return {
-    addRemoteHost: mutateAsync,
+    removeRemote: mutateAsync,
     ...rest,
   }
 };

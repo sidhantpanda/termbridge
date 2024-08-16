@@ -1,12 +1,17 @@
 import express from 'express';
 import http, { Server } from 'http';
 import path from 'path';
+import cors from 'cors';
 import router from './routes';
 import { ensureDBs } from './couchdb/init';
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cors({
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+}));
 
 app.use((_req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
