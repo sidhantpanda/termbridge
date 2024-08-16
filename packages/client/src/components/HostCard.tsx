@@ -3,7 +3,11 @@ import { Card, Center, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 import { RemoteHost } from '@termbridge/common';
 import { Link } from 'react-router-dom';
 import { FaServer, FaNetworkWired, FaUser } from 'react-icons/fa6';
-import { IconBaseProps, IconType } from 'react-icons';
+import { GiServerRack } from 'react-icons/gi';
+import { GrServerCluster, GrServer } from 'react-icons/gr';
+import {  IconType } from 'react-icons';
+import { BsHddNetwork } from "react-icons/bs";
+
 
 export interface HostCardProps {
   hostConfig: RemoteHost;
@@ -32,12 +36,12 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
       <Card key={name} p={2} m={2}>
         <Flex direction="row" >
           <Center p="6px">
-            <Icon as={FaServer} color='green.500' />
+            <Icon as={GrServerCluster} color='green.500' />
           </Center>
           <Flex direction="column" p="6px">
 
             <Text fontSize='lg'>{name}</Text>
-            <IconText icon={FaNetworkWired} text={host} />
+            <IconText icon={BsHddNetwork} text={host} />
             <IconText icon={FaUser} text={username} />
           </Flex>
           <Spacer />
