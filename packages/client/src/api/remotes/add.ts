@@ -1,4 +1,4 @@
-import { AddRemoteHostRequest, AddRemoteHostResponse, GetRemoteHostsResponse, RemoteHost } from '@termbridge/common';
+import { AddRemoteHostRequest, AddRemoteHostResponse } from '@termbridge/common';
 import { API_METHODS, makeApiCall } from '../base-api';
 
 export const addRemoteHost = async (options: AddRemoteHostRequest): Promise<void> => {

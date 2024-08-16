@@ -1,11 +1,14 @@
 import RemoteHost from '../../models/RemoteHost';
 
 export interface AddRemoteHostRequest {
-  name: string,
-  host: string,
-  port: number,
-  username: string,
-  password: string,
+  isDryRun: boolean;
+  remote: {
+    name: string,
+    host: string,
+    port: number,
+    username: string,
+    password: string,
+  }
 }
 
 interface AddRemoteHostResponseSuccess {

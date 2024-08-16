@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import getRemotes from './get-all';
 import addRemote from './add';
-import addRemoteTest from './add-test';
+import getRemoteById from './get-by-id';
+import updateRemote from './update';
 
 export const remotesRouter = Router();
 
-// configRouter.get('/hosts', getHosts);
-
 remotesRouter.get('/all', getRemotes);
+remotesRouter.get('/:id', getRemoteById);
+remotesRouter.post('/:id', updateRemote);
 remotesRouter.post('/add', addRemote);
-remotesRouter.post('/add-test', addRemoteTest);

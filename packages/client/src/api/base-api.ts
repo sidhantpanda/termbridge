@@ -3,7 +3,9 @@ import request from 'superagent';
 export enum API_METHODS {
   GET = 'GET',
   POST = 'POST',
-  DELETE = 'DELETE'
+  DELETE = 'DELETE',
+  PUT = 'PUT',
+  PATCH = 'PATCH',
 }
 
 export interface MakeApiCallOptions {

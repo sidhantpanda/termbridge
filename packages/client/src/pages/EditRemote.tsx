@@ -1,66 +1,99 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Center, Flex, FormControl, FormHelperText, FormLabel, Heading, Icon, Input, InputGroup, InputLeftElement, Spacer, Stack } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Flex,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Spacer,
+  Spinner,
+  Stack
+} from '@chakra-ui/react';
 import { BsHddNetwork } from "react-icons/bs";
 import { FaUser } from 'react-icons/fa6';
 import { MdOutlinePassword } from "react-icons/md";
-import { Link, useNavigate } from 'react-router-dom';
-import { useAddRemoteHost } from '../hooks/mutations/useAddRemoteHost';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MdOutlineCheck } from "react-icons/md";
+import useRemoteById from '../hooks/useRemoteHostById';
+import { useUpdateRemoteHost } from '../hooks/mutations/useUpdateRemoteHost';
 
 
-const AddRemote = () => {
-  // const { id_host } = useParams();
-  // const [name, id] = id_host.split('-');
+const EditRemote = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { addRemoteHost, isPending: isAddPending } = useAddRemoteHost();
+  const { remote, isLoading } = useRemoteById(id);
+  const { udpateRemoteHost, isPending: isUpdatePending } = useUpdateRemoteHost();
+  const [isUpdateTestPending, setIsUpdateTestPending] = useState(false);
+  const [isUpdateTestSuccess, setIsUpdateTestSuccess] = useState(false);
   const [name, setName] = useState('');
   const [host, setHost] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [port, setPort] = useState(-1);
-  const [isAddTestPending, setIsAddTestPending] = useState(false);
-  const [isAddTestSuccess, setIsAddTestSuccess] = useState(false);
 
-  // useEffect(() => {
-  //   if (isAddSuccess) {
-  //     navigate('/');
-  //   }
-  // }, [isAddSuccess])
+  useEffect(() => {
+    if (remote) {
+      setName(remote.name);
+      setHost(remote.host);
+      setUsername(remote.username);
+      setPort(remote.port);
+    }
+  }, [remote]);
 
-  const addRemoteTest = async () => {
-    setIsAddTestPending(true);
-    await addRemoteHost({
-      isDryRun: true,
-      remote: {
-        name,
-        host,
-        port: port >= 0 ? port : 22,
-        username,
-        password
+  const updateRemoteTest = async () => {
+    setIsUpdateTestPending(true);
+    await udpateRemoteHost({
+      id,
+      update: {
+        isDryRun: true,
+        remote: {
+          name,
+          host,
+          port: port >= 0 ? port : 22,
+          username,
+          password,
+        }
       }
     });
-    setIsAddTestPending(false);
-    setIsAddTestSuccess(true);
+    setIsUpdateTestPending(false);
+    setIsUpdateTestSuccess(true);
   };
 
   const addRemote = async () => {
-    await addRemoteHost({
-      isDryRun: false,
-      remote: {
-        name,
-        host,
-        port: port >= 0 ? port : 22,
-        username,
-        password
+    await udpateRemoteHost({
+      id,
+      update: {
+        isDryRun: false,
+        remote: {
+          name,
+          host,
+          port: port >= 0 ? port : 22,
+          username,
+          password,
+        }
       }
     });
     navigate('/');
   };
 
+  if (isLoading) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
+
   return (
     <>
       <Center>
-        <Heading>Add New Remote</Heading>
+        <Heading>Edit Remote</Heading>
       </Center>
       <Stack spacing={4} mt="18px">
         <FormControl isRequired>
@@ -141,13 +174,14 @@ const AddRemote = () => {
             </InputLeftElement>
             <Input
               type="password"
-              placeholder='password'
+              placeholder='•••••••••'
               value={password}
               onChange={(event) => {
                 setPassword(event.target.value);
               }}
             />
           </InputGroup>
+          <FormHelperText>Leave empty to keep previous password</FormHelperText>
         </FormControl>
 
         <Flex direction="row">
@@ -158,12 +192,12 @@ const AddRemote = () => {
           </Link>
           <Spacer />
           <Button
-            colorScheme={isAddTestSuccess ? 'green' : 'blue'}
+            colorScheme={isUpdateTestSuccess ? 'green' : 'blue'}
             variant='outline'
-            onClick={addRemoteTest}
-            isLoading={isAddTestPending}
-            disabled={isAddPending}
-            rightIcon={isAddTestSuccess ? <Icon as={MdOutlineCheck} /> : null}
+            onClick={updateRemoteTest}
+            isLoading={isUpdateTestPending}
+            disabled={isUpdatePending}
+            rightIcon={isUpdateTestSuccess ? <Icon as={MdOutlineCheck} /> : null}
           >
             Test
           </Button>
@@ -171,10 +205,10 @@ const AddRemote = () => {
             ml="6px"
             colorScheme='blue'
             onClick={addRemote}
-            isLoading={isAddPending && !isAddTestPending}
-            disabled={isAddPending}
+            isLoading={isUpdatePending && !isUpdateTestPending}
+            disabled={isUpdatePending}
           >
-            Save
+            Update
           </Button>
 
         </Flex>
@@ -183,4 +217,4 @@ const AddRemote = () => {
   );
 };
 
-export default AddRemote;
+export default EditRemote;

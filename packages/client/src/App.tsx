@@ -8,11 +8,13 @@ import Terminal from './pages/Terminal';
 import './style.css';
 import AddRemote from './pages/AddRemote';
 import Layout from './Layout';
+import EditRemote from './pages/EditRemote';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      retry: false,
     },
   },
 });
@@ -28,6 +30,7 @@ const App: React.FC = () => {
               <Route path="/terminals" element={<AllTerminals />} />
               <Route path="/remotes/add" element={<AddRemote />} />
               <Route path="*" element={<h1>Not Found</h1>} />
+              <Route path="/remotes/:id/edit" element={<EditRemote />} />
             </Route>
             <Route path="/remotes/:id_host/terminal" element={<Terminal />} />
           </Routes>
