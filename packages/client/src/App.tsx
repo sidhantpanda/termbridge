@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import AllTerminals from './pages/AllTerminals';
 import Terminal from './pages/Terminal';
 import './style.css';
+import AddRemote from './pages/AddRemote';
+import Layout from './Layout';
 
 const queryClient = new QueryClient();
 
@@ -15,10 +17,13 @@ const App: React.FC = () => {
       <ChakraProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/terminals" element={<AllTerminals />} />
-            <Route path="/terminal/:id_host" element={<Terminal />} />
-            <Route path="*" element={<h1>Not Found</h1>} />
+            <Route path="/" element={<Layout />} >
+              <Route path="/" element={<Home />} />
+              <Route path="/terminals" element={<AllTerminals />} />
+              <Route path="/remotes/add" element={<AddRemote />} />
+              <Route path="*" element={<h1>Not Found</h1>} />
+            </Route>
+            <Route path="/remotes/:id_host/terminal" element={<Terminal />} />
           </Routes>
         </Router>
       </ChakraProvider>

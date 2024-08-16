@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { FaServer, FaNetworkWired, FaUser } from 'react-icons/fa6';
 import { GiServerRack } from 'react-icons/gi';
 import { GrServerCluster, GrServer } from 'react-icons/gr';
-import {  IconType } from 'react-icons';
+import { IconType } from 'react-icons';
 import { BsHddNetwork } from "react-icons/bs";
 
 
@@ -32,8 +32,8 @@ const IconText = ({ icon, text }: IconTextProps) => {
 const HostCard = ({ hostConfig }: HostCardProps) => {
   const { _id, name, host, username } = hostConfig;
   return (
-    <Link to={`/terminal/${name}-${_id}`}>
-      <Card key={name} p={2} m={2}>
+    <Link to={`remotes/${name}-${_id}/terminal`}>
+      <Card key={name} p={2}>
         <Flex direction="row" >
           <Center p="6px">
             <Icon as={GrServerCluster} color='green.500' />
