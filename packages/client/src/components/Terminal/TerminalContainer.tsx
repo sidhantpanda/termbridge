@@ -22,8 +22,8 @@ const TerminalContainer = ({ id, name, ...rest }: TerminalContainerProps) => {
 
   const getContainer = () => document.getElementById(terminalId);
 
-  const wsHost = window.location.host === 'localhost:3000' ? 'localhost:3001' : window.location.host;
-  const { sendMessage, lastMessage, readyState } = useWebSocket(`ws://${wsHost}`);
+  const wsHost = __WS_HOST__;
+  const { sendMessage, lastMessage, readyState } = useWebSocket(wsHost);
 
   const handleResize = () => {
     const container = getContainer();

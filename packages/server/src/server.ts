@@ -26,6 +26,7 @@ const server = http.createServer(app);
 
 app.use(express.static(CLIENT_DIST));
 app.use('/api', router);
+app.use('*', express.static(CLIENT_DIST));
 
 export const startServer = async () => {
   return new Promise<Server>(async (resolve) => {

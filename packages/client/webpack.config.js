@@ -7,6 +7,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       __API_HOST__: JSON.stringify('http://localhost:3000'),
+      __WS_HOST__: JSON.stringify('ws://localhost:3000'),
     })
   ],
 })
