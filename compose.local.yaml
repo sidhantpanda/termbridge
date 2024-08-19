@@ -1,7 +1,9 @@
 services:
   termbridge:
     container_name: termbridge
-    image: sidhantpanda/termbridge
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       - COUCHDB_HOST=couchdb
