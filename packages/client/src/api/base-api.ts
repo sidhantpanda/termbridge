@@ -34,8 +34,11 @@ export const makeApiCall = async <ResponseType = unknown>(
   options?: MakeApiCallOptions
 ): Promise<ResponseType> => {
   const { json = true, body, query } = options ?? {};
+  const hostname = window.location.hostname;
+  const port = window.location.port;
+  const protocol = window.location.protocol;
 
-  const host = API_HOST;
+  const host = API_HOST === 'PROD_BUILD' ? `${protocol}://${hostname}:${port}` : API_HOST;
 
   const fullUrl = `${host}${url}`;
 

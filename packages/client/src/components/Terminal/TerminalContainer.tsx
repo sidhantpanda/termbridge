@@ -22,7 +22,11 @@ const TerminalContainer = ({ id, name, ...rest }: TerminalContainerProps) => {
 
   const getContainer = () => document.getElementById(terminalId);
 
-  const wsHost = __WS_HOST__;
+  const host = window.location.hostname;
+  const port = window.location.port;
+  const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+
+  const wsHost = __WS_HOST__ === 'PROD_BUILD'? `${protocol}://${host}:${port}` : __WS_HOST__;
   const { sendMessage, lastMessage, readyState } = useWebSocket(wsHost);
 
   const handleResize = () => {
