@@ -48,7 +48,7 @@ services:
     volumes:
       - ./data/coubchdb:/opt/couchdb/data
     ports:
-      - "5984:5984"
+      - 5984:5984
 ```
 
 ### Docker Compose (with existing CouchDB)
