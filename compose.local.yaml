@@ -8,8 +8,8 @@ services:
     environment:
       - COUCHDB_HOST=couchdb
       - COUCHDB_PORT=5984
-      - COUCHDB_USER=${COUCHDB_USER}
-      - COUCHDB_PASS=${COUCHDB_PASS}
+      - COUCHDB_USER=${COUCHDB_USER:-admin}
+      - COUCHDB_PASSWORD=${COUCHDB_PASS:-password}
     ports:
       - 3000:3000
   couchdb:
