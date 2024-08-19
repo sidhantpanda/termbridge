@@ -16,7 +16,6 @@ const updateRemoteSchema = Joi.object({
 });
 
 const updateRemote: RequestHandler = async (req: Request<{ id?: string }, {}, AddRemoteHostRequest>, res) => {
-  console.log('hello hello')
   const id = req.params.id;
   if (!id) {
     res.status(400).send({ error: 'id is required' });

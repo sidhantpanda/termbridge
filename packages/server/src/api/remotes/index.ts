@@ -8,7 +8,7 @@ import removeRemote from './remove';
 export const remotesRouter = Router();
 
 remotesRouter.get('/all', getRemotes);
+remotesRouter.post('/add', addRemote);
 remotesRouter.get('/:id', getRemoteById);
 remotesRouter.post('/:id', updateRemote);
 remotesRouter.delete('/:id', removeRemote);
-remotesRouter.post('/add', addRemote);
