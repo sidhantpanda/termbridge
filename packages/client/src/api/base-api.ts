@@ -38,9 +38,13 @@ export const makeApiCall = async <ResponseType = unknown>(
   const port = window.location.port;
   const protocol = window.location.protocol;
 
-  const host = API_HOST === 'PROD_BUILD' ? `${protocol}://${hostname}:${port}` : API_HOST;
+
+
+  const host = API_HOST === 'PROD_BUILD' ? `${protocol}//${hostname}:${port}` : API_HOST;
 
   const fullUrl = `${host}${url}`;
+
+  console.log({ hostname, port, protocol, host, fullUrl })
 
   try {
     const req = request(method, fullUrl).ok((res) => res.status >= 200); // Will handle this error code ourselves
