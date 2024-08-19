@@ -1,4 +1,5 @@
 const { merge } = require('webpack-merge');
+const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -9,6 +10,11 @@ module.exports = merge(common, {
     port: 3000, // Add your desired port number here
     historyApiFallback: true
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      __API_HOST__: JSON.stringify('http://localhost:3001'),
+    })
+  ],
   optimization: {
     runtimeChunk: 'single',
   },

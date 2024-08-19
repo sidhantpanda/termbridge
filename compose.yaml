@@ -1,0 +1,12 @@
+services:
+  termbridge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - COUCHDB_HOST=${COUCHDB_HOST}
+      - COUCHDB_PORT=${COUCHDB_PORT}
+      - COUCHDB_USER=${COUCHDB_USER}
+      - COUCHDB_PASS=${COUCHDB_PASS}
+    ports:
+      - 3000:3000

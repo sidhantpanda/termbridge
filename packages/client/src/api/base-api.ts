@@ -1,4 +1,5 @@
 import request from 'superagent';
+import { API_HOST } from '../config';
 
 export enum API_METHODS {
   GET = 'GET',
@@ -34,7 +35,7 @@ export const makeApiCall = async <ResponseType = unknown>(
 ): Promise<ResponseType> => {
   const { json = true, body, query } = options ?? {};
 
-  const host = 'http://localhost:3001';
+  const host = API_HOST;
 
   const fullUrl = `${host}${url}`;
 

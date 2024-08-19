@@ -1,0 +1,4 @@
+# Copy the content of .gitignore into .dockerignore
+**/.env
+node_modules
+**/dist
