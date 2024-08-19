@@ -9,6 +9,14 @@ cleanup() {
 
 trap cleanup SIGINT EXIT
 
+# Determine if sudo is required
+if docker info &> /dev/null; then
+    SUDO=""
+else
+    SUDO="sudo"
+    echo "Docker commands require sudo permission. Please ensure you have the necessary privileges."
+fi
+
 # Make sure docker-compose is installed
 if command -v docker-compose &> /dev/null; then
     DOCKER_COMPOSE_CMD="docker-compose"
@@ -19,11 +27,12 @@ else
     exit 1
 fi
 
-if [ -z "$(docker network ls -qf name=^termbridge$)" ]; then
+# Ensure the termbridge network exists
+if [ -z "$($SUDO docker network ls -qf name=^termbridge$)" ]; then
   echo "Creating network"
-  docker network create termbridge >/dev/null
+  $SUDO docker network create termbridge >/dev/null
 fi
 
-COMPOSE_HTTP_TIMEOUT=120 $DOCKER_COMPOSE_CMD -f compose.dev.yaml up -d --force-recreate
+COMPOSE_HTTP_TIMEOUT=120 $SUDO $DOCKER_COMPOSE_CMD -f compose.dev.yaml up -d --force-recreate
 
 yarn dev
