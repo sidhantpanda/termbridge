@@ -8,6 +8,7 @@ import './style.css';
 import AddRemote from './pages/AddRemote';
 import Layout from './Layout';
 import EditRemote from './pages/EditRemote';
+import LoggedOut from './components/Terminal/LoggedOut';
 
 const queryClient = new QueryClient({
   defaultOptions: {

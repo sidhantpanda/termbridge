@@ -12,9 +12,10 @@ import { getTerminalGridUnits } from './terminal-utils';
 interface TerminalContainerProps extends FlexProps {
   id: string;
   name: string;
+  onLogout?: () => void;
 }
 
-const TerminalContainer = ({ id, name, ...rest }: TerminalContainerProps) => {
+const TerminalContainer = ({ id, name, onLogout, ...rest }: TerminalContainerProps) => {
   const [terminalId] = useState(v4());
   const { width, height } = useWindowSize();
   const [terminal, setTerminal] = useState<Terminal | null>();
@@ -26,7 +27,7 @@ const TerminalContainer = ({ id, name, ...rest }: TerminalContainerProps) => {
   const port = window.location.port;
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
 
-  const wsHost = __WS_HOST__ === 'PROD_BUILD'? `${protocol}://${host}:${port}` : __WS_HOST__;
+  const wsHost = __WS_HOST__ === 'PROD_BUILD' ? `${protocol}://${host}:${port}` : __WS_HOST__;
   const { sendMessage, lastMessage, readyState } = useWebSocket(wsHost);
 
   const handleResize = () => {
@@ -79,6 +80,10 @@ const TerminalContainer = ({ id, name, ...rest }: TerminalContainerProps) => {
       const data = JSON.parse(lastMessage.data);
       if (data.action === 'data') {
         terminal.write(data.data);
+      } else if (data.action === 'logout') {
+        if (onLogout) {
+          onLogout();
+        }
       }
     }
   }, [lastMessage]);

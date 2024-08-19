@@ -1,5 +1,6 @@
 import { Server } from 'http';
 import WebSocket from 'ws';
+import { Client } from 'ssh2';
 import RemoteHosts from './couchdb/RemoteHosts';
 import { startTerminalSession } from './lib/ssh';
 
@@ -22,11 +23,19 @@ export const startWsServer = (server: Server) => {
             }, null, 2)
           }));
         } else {
-          const terminalSession = await startTerminalSession(hostConfig, (data: string) => {
-            ws.send(JSON.stringify({
-              action: 'data',
-              data
-            }));
+          const terminalSession = await startTerminalSession({
+            config: hostConfig,
+            onData: (data: string) => {
+              ws.send(JSON.stringify({
+                action: 'data',
+                data
+              }));
+            },
+            onLogout: () => {
+              ws.send(JSON.stringify({
+                action: 'logout'
+              }));
+            }
           });
           ws.on('message', (message) => {
             const msg = JSON.parse(message as unknown as string);

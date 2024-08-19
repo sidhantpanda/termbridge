@@ -2,11 +2,16 @@ import React from 'react';
 import { Box, Center } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
-const Layout = () => {
+interface LayoutProps {
+  children?: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <Center mt="18px">
       <Box w="500px">
         <Outlet />
+        {children}
       </Box>
     </Center >
   );
