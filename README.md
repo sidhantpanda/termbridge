@@ -1,6 +1,6 @@
 # Termbridge
 
-Remote terminal access to your homelab.
+Manage terminall access to all your homelab devices from a single web interface.
 
 ## Requirements
 
