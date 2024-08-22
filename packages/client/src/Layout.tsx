@@ -9,7 +9,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <Center mt="18px">
-      <Box w="500px">
+      <Box >
         <Outlet />
         {children}
       </Box>
