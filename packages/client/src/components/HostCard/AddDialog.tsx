@@ -12,8 +12,7 @@ interface EditDialogProps {
 }
 
 export const AddDialog = ({ isOpen, setIsOpen }: EditDialogProps) => {
-  const handleSaveEdit = () => {
-  };
+  // const
   return <Dialog open={isOpen} onOpenChange={setIsOpen}>
     <DialogContent>
       <DialogHeader>

@@ -3,9 +3,13 @@ import { Input } from "@/components/ui/input"
 import React from 'react'
 import useRemoteHosts from '@/hooks/useRemoteHosts'
 import HostCard from '@/components/HostCard/HostCard'
+import { Button } from '@/components/ui/button'
+import { PlusIcon } from 'lucide-react'
+import { AddDialog } from '@/components/HostCard/AddDialog'
 
 export default function Component() {
   let { hosts, isLoading, isFetching, isError, error } = useRemoteHosts();
+  const [isAdding, setIsAdding] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
 
   const filteredDevices = (hosts ?? []).filter(host =>
@@ -15,7 +19,13 @@ export default function Component() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Termbridge Dashboard</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Termbridge Dashboard</h1>
+        <Button onClick={() => { setIsAdding(true) }}>
+          <PlusIcon className="h-4 w-4 mr-2" />
+          Add Host
+        </Button>
+      </div>
       <Input
         type="text"
         placeholder="Search devices..."
@@ -28,6 +38,7 @@ export default function Component() {
           <HostCard key={host._id} hostConfig={host} />
         ))}
       </div>
+      <AddDialog isOpen={isAdding} setIsOpen={setIsAdding} />
     </div>
   )
 }

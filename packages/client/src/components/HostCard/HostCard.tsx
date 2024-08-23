@@ -42,7 +42,7 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
 
   return (
     <>
-      <Card w="300px">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ServerIcon className="h-8 w-8" />
