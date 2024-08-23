@@ -1,7 +1,6 @@
-import { Button, Center, Flex, Heading, Icon, Spacer, Text } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
+import { ArrowLeft, Terminal } from 'lucide-react';
 import React from 'react'
-import { FaArrowLeft } from "react-icons/fa";
-import { GoTerminal } from "react-icons/go";
 
 interface LoggedOutProps {
   onHomeRequested: () => void;
@@ -13,32 +12,34 @@ const LoggedOut = ({ onHomeRequested, onReloadTerminalRequested }: LoggedOutProp
     console.log('Home requested');
     onHomeRequested();
   }
-  console.log('LoggedOut');
-
   const reloadTerminalRequest = () => {
     console.log('Reload Terminal requested');
     onReloadTerminalRequested();
   }
   return (
-    <>
-      <Center>
-        <Heading>Termbridge</Heading>
-      </Center>
-      <Flex direction="column" mt="8px" gap="6px">
-        <Center>
-          <Text>Remote Session ended</Text>
-        </Center>
-      </Flex>
-      <br />
-      <Flex direction="row" gap="6px" alignContent="center" justify="center">
-        <Button color="gray.500" leftIcon={<Icon boxSize={3} as={FaArrowLeft} />} onClick={homeRequest}>
-          <Text fontSize='xs' ml="2px">Home</Text>
+    <div className="flex flex-col items-center  min-h-screen p-4 bg-background">
+      <h1 className="text-5xl font-bold mb-2 text-foreground">Termbridge</h1>
+      <p className="text-xl mb-8 text-muted-foreground">Remote Session ended</p>
+
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Button
+          // variant="secondary"
+          className="flex items-center justify-center gap-2 px-6 py-4 text-base"
+          onClick={homeRequest}
+        >
+          <ArrowLeft className="w-5 h-5" />
+          Home
         </Button>
-        <Button color="blue.400" leftIcon={<Icon boxSize={3} as={GoTerminal} />} onClick={reloadTerminalRequest}>
-          <Text fontSize='xs' ml="2px">Reload Terminal</Text>
+        <Button
+          // variant="secondary"
+          className="flex items-center justify-center gap-2 px-6 py-4 text-base"
+          onClick={reloadTerminalRequest}
+        >
+          <Terminal className="w-5 h-5" />
+          Reload Terminal
         </Button>
-      </Flex>
-    </>
+      </div>
+    </div>
   )
 };
 
