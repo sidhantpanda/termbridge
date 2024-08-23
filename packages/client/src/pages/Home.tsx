@@ -1,28 +1,17 @@
 import { useState } from 'react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { LaptopIcon, ServerIcon, SmartphoneIcon, TabletIcon } from 'lucide-react'
 import React from 'react'
 import useRemoteHosts from '@/hooks/useRemoteHosts'
-import { RemoteHost } from '@termbridge/common'
-import { useNavigate } from 'react-router-dom'
-import HostCard from '@/components/HostCard'
-
+import HostCard from '@/components/HostCard/HostCard'
 
 export default function Component() {
   let { hosts, isLoading, isFetching, isError, error } = useRemoteHosts();
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('')
 
   const filteredDevices = (hosts ?? []).filter(host =>
     host.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     host.host.includes(searchTerm)
   )
-
-  const handleConnect = (host: RemoteHost) => {
-    navigate(`remotes/${host._id}-${host.name}/terminal`)
-  }
 
   return (
     <div className="container mx-auto p-4">
