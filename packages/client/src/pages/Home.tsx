@@ -5,17 +5,20 @@ import useRemoteHosts from '@/hooks/useRemoteHosts'
 import HostCard from '@/components/HostCard/HostCard'
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
-import { AddDialog } from '@/components/HostCard/AddDialog'
+import { AddOrUpdateDialog } from '@/components/HostCard/AddOrUpdateDialog'
 
 export default function Component() {
   let { hosts, isLoading, isFetching, isError, error } = useRemoteHosts();
-  const [isAdding, setIsAdding] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
+  const [isAdding, setIsAdding] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredDevices = (hosts ?? []).filter(host =>
-    host.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    host.host.includes(searchTerm)
-  )
+  const hostCards = (hosts ?? [])
+    .filter(host =>
+      host.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      host.host.includes(searchTerm)
+    ).map(host => (
+      <HostCard key={host._id} hostConfig={host} />
+    ));
 
   return (
     <div className="container mx-auto p-4">
@@ -34,11 +37,9 @@ export default function Component() {
         className="mb-4"
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredDevices.map((host) => (
-          <HostCard key={host._id} hostConfig={host} />
-        ))}
+        {hostCards}
       </div>
-      <AddDialog isOpen={isAdding} setIsOpen={setIsAdding} />
+      <AddOrUpdateDialog isOpen={isAdding} setIsOpen={setIsAdding} />
     </div>
   )
 }
