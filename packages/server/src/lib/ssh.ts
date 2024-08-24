@@ -68,11 +68,15 @@ export class TerminalSession {
   }
 
   write(data: string) {
-    this.stream.write(data);
+    if (this.stream) {
+      this.stream.write(data);
+    }
   }
 
   resize(cols: number, rows: number, width: number, height: number) {
-    this.stream.setWindow(rows, cols, height, width);
+    if (this.stream) {
+      this.stream.setWindow(rows, cols, height, width);
+    }
   }
 
   end() {
