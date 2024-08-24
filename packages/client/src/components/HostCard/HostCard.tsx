@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, CardFooter, CardHeader, Center, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
+import { Card, CardFooter, CardHeader, Center, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 import { RemoteHost } from '@termbridge/common';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
@@ -11,9 +11,9 @@ import { IoTrashOutline } from "react-icons/io5";
 import { useRemoveRemote } from '../../hooks/mutations/useRemoveRemote';
 import { CardContent, CardTitle } from '../ui/card';
 import { PencilIcon, ServerIcon, TrashIcon } from 'lucide-react';
-import { EditDialog } from './EditDialog';
-import { AddDialog } from './AddDialog';
+import { AddOrUpdateDialog } from './AddOrUpdateDialog';
 import { DeleteDialog } from './DeleteDialog';
+import { Button } from '../ui/button';
 
 
 export interface HostCardProps {
@@ -23,21 +23,20 @@ export interface HostCardProps {
 const HostCard = ({ hostConfig }: HostCardProps) => {
   const { _id, name, host, username, port } = hostConfig;
   const navigate = useNavigate();
-  const { removeRemote, isPending } = useRemoveRemote();
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [showEditFlow, setShowEditFlow] = React.useState(false);
+  const [showDeleteFlow, setShowDeleteFlow] = React.useState(false);
 
   const handleConnect = () => {
     navigate(`remotes/${_id}-${name}/terminal`)
   }
 
   const handleEdit = () => {
-    setIsEditing(true);
+    setShowEditFlow(true);
   }
 
   const handleRemove = () => {
     // confirm(`Are you sure you want to delete ${name}?`) && removeRemote({ id: _id });
-    setIsDeleting(true);
+    setShowDeleteFlow(true);
   }
 
   return (
@@ -51,6 +50,8 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">IP: {host}</p>
+          <p className="text-sm text-muted-foreground">Username: {username}</p>
+          <p className="text-sm text-muted-foreground">Port: {port}</p>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button onClick={() => handleConnect()} >
@@ -76,14 +77,14 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           </div>
         </CardFooter>
       </Card>
-      <EditDialog
-        isOpen={isEditing}
+      <AddOrUpdateDialog
+        isOpen={showEditFlow}
         hostConfig={hostConfig}
-        setIsOpen={setIsEditing} />
+        setIsOpen={setShowEditFlow} />
       <DeleteDialog
-        isOpen={isDeleting}
+        isOpen={showDeleteFlow}
         hostConfig={hostConfig}
-        setIsOpen={setIsDeleting} />
+        setIsOpen={setShowDeleteFlow} />
     </>
   );
 };
