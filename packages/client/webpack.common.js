@@ -4,7 +4,18 @@ const yaml = require('yamljs');
 const json5 = require('json5');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
+const finalPath = path.resolve(__dirname, 'dist');
+const assetSource = path.resolve(__dirname, 'public', 'assets');
+const assetDest = path.resolve(finalPath, 'assets');
+
+console.log({
+  finalPath,
+  assetSource,
+  assetDest,
+
+})
 
 module.exports = {
   entry: './src/index.tsx',
@@ -19,12 +30,20 @@ module.exports = {
     plugins: [
       new TsconfigPathsPlugin({
         configFile: "./tsconfig.json" // Path to your tsconfig.json
-      })
+      }),
+      // new CopyPlugin({
+      //   patterns: [
+      //     {
+      //       from: assetSource,
+      //       to: assetDest
+      //     },
+      //   ],
+      // }),
     ]
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: finalPath,
     clean: true,
   },
   module: {
