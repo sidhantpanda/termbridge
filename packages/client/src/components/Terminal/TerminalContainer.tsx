@@ -92,7 +92,7 @@ const TerminalContainer = ({ id, name, onLogout, ...rest }: TerminalContainerPro
     if (readyState === ReadyState.OPEN) {
       const terminal = initTerm();
       terminal.write('Connecting to ' + name + ' (' + id + ')...\r\n');
-
+      terminal.focus();
       handleResize();
     }
   }, [readyState]);
