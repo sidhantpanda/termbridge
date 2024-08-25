@@ -1,15 +1,7 @@
 import React from 'react';
-import { Card, CardFooter, CardHeader, Center, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 import { RemoteHost } from '@termbridge/common';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaUser } from 'react-icons/fa6';
-import { GrServerCluster } from 'react-icons/gr';
-import { IconType } from 'react-icons';
-import { BsHddNetwork } from "react-icons/bs";
-import { GoTerminal, GoPencil } from "react-icons/go";
-import { IoTrashOutline } from "react-icons/io5";
-import { useRemoveRemote } from '../../hooks/mutations/useRemoveRemote';
-import { CardContent, CardTitle } from '../ui/card';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { PencilIcon, ServerIcon, TrashIcon } from 'lucide-react';
 import { AddOrUpdateDialog } from './AddOrUpdateDialog';
 import { DeleteDialog } from './DeleteDialog';
