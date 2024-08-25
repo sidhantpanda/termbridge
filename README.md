@@ -13,13 +13,13 @@ You'll need a CouchDB instance running to store terminal credentials. You can us
 
 ```bash
 docker run -d \
--p 3000:3000 \
---name termbridge \
--e COUCHDB_HOST=you-couch-db-host \
--e COUCHDB_PORT=5984 \
--e COUCHDB_USER=COUCH_USER \
--e COUCHDB_PASS=COUCHDB_PASS \
-sidhantpanda/termbridge:latest
+  -p 3000:3000 \
+  --name termbridge \
+  -e COUCHDB_HOST=you-couch-db-host \
+  -e COUCHDB_PORT=5984 \
+  -e COUCHDB_USER=COUCH_USER \
+  -e COUCHDB_PASS=COUCHDB_PASS \
+  sidhantpanda/termbridge:latest
 ```
 
 ### Docker Compose (with CouchDB)
