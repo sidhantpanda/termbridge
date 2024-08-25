@@ -9,10 +9,13 @@ export enum API_METHODS {
   PATCH = 'PATCH',
 }
 
-export interface MakeApiCallOptions {
-  query?: Record<string, string | number>;
+type RequestBodyType = string | object;
+type RequestQueryType = { [key: string]: string };
+
+export interface MakeApiCallOptions<RequestBody = RequestBodyType> {
+  query?: Record<string, any> | string;
   json?: boolean;
-  body?: object;
+  body?: RequestBody;
 }
 
 export class ApiError extends Error {
@@ -28,17 +31,19 @@ export class ApiError extends Error {
   }
 }
 
-export const makeApiCall = async <ResponseType = unknown>(
+
+export const makeApiCall = async <
+  ResponseType = unknown,
+  RequestBody extends string | object = RequestBodyType,
+>(
   method: API_METHODS,
   url: string,
-  options?: MakeApiCallOptions
+  options?: MakeApiCallOptions<RequestBody>
 ): Promise<ResponseType> => {
   const { json = true, body, query } = options ?? {};
   const hostname = window.location.hostname;
   const port = window.location.port;
   const protocol = window.location.protocol;
-
-
 
   const host = API_HOST === 'PROD_BUILD' ? `${protocol}//${hostname}:${port}` : API_HOST;
 

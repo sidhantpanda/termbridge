@@ -7,7 +7,7 @@ export const useRemoveRemote = () => {
   const queryClient = useQueryClient();
   const { mutateAsync, ...rest } = useMutation({
     mutationFn: removeRemote,
-    onSettled: (_data, _error, variables, _context) => {
+    onSettled: (_data, _error, _variables, _context) => {
       queryClient.refetchQueries({
         queryKey: getAllRemoteHostsKey,
       });
