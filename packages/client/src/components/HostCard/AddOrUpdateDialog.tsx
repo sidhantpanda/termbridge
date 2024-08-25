@@ -1,22 +1,25 @@
 import { RemoteHost } from '@termbridge/common';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { useNavigate } from 'react-router-dom';
-import { useAddRemoteHost } from '@/hooks/mutations/useAddRemoteHost';
-import { useUpdateRemoteHost } from '@/hooks/mutations/useUpdateRemoteHost';
-import { Loader2 } from 'lucide-react';
+import { useCreateOrUpdateHost } from '@/hooks/mutations/useCreateOrUpdateHost';
+import { ButtonWithState } from '../ui-custom/ButtonWithState';
 
 enum DialogMode {
   ADD = 'ADD',
   UPDATE = 'UPDATE'
 }
 
+interface CreateOrUpdateComponentRemoteHost extends Omit<RemoteHost, '_id'> {
+  _id?: string;
+}
+
 interface AddOrUpdateDialogProps {
   isOpen: boolean;
-  hostConfig?: RemoteHost;
+  hostConfig?: CreateOrUpdateComponentRemoteHost;
   setIsOpen: (isOpen: boolean) => void;
 }
 
@@ -27,50 +30,59 @@ export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdate
   const [username, setUsername] = useState(hostConfig?.username ?? '');
   const [password, setPassword] = useState('');
   const [port, setPort] = useState(hostConfig?.port ? `${hostConfig.port}` : '22');
-  const { addRemoteHost, isPending: isAddPending } = useAddRemoteHost();
-  const { udpateRemoteHost, isPending: isUpdatePending } = useUpdateRemoteHost();
-  const mode = hostConfig ? DialogMode.UPDATE : DialogMode.ADD;
+
+  const {
+    createOrUpdateHost: createOrUpdateHostDryRun,
+    isPending: isAddPendingDryRun,
+    isSuccess: isAddSuccessDryRun,
+    isError: isAddErrorDryRun,
+    error: addErrorDryRun,
+  } = useCreateOrUpdateHost({ isDryRun: true });
+
+  const {
+    createOrUpdateHost,
+    isPending: isAddPending,
+    isSuccess: isAddSuccess,
+    isError: isAddError,
+    error: addError,
+  } = useCreateOrUpdateHost({ isDryRun: false });
+
+  const mode = !!hostConfig?._id ? DialogMode.UPDATE : DialogMode.ADD;
   const title = mode === DialogMode.ADD ? 'Add New Host' : 'Update Host';
   const confirmButtonText = mode === DialogMode.ADD ? 'Add Host' : 'Update Host';
 
-  const addRemote = async () => {
-    await addRemoteHost({
-      isDryRun: false,
+  useEffect(() => {
+    if (isAddSuccess && !isAddError) {
+      setIsOpen(false);
+    }
+  }, [isAddSuccess]);
+
+  const onConfirmDryRunHandle = async () => {
+    createOrUpdateHostDryRun({
       remote: {
+        _id: hostConfig?._id,
         name,
         host,
         port: port === '' ? 22 : parseInt(port),
         username,
-        password
+        password,
+      }
+    });
+  }
+
+  const onConfirmHandle = async () => {
+    createOrUpdateHost({
+      remote: {
+        _id: hostConfig?._id,
+        name,
+        host,
+        port: port === '' ? 22 : parseInt(port),
+        username,
+        password,
       }
     });
   };
 
-  const updateRemote = async () => {
-    if (hostConfig) {
-      await udpateRemoteHost({
-        id: hostConfig._id,
-        update: {
-          isDryRun: false,
-          remote: {
-            name,
-            host,
-            port: port === '' ? 22 : parseInt(port),
-            username,
-            password,
-          }
-        }
-      });
-    }
-  };
-
-  const onConfirmHandle = async () => {
-    if (mode === DialogMode.UPDATE) {
-      await updateRemote();
-    } else {
-      await addRemote();
-    }
-  }
 
   return <Dialog open={isOpen} onOpenChange={setIsOpen}>
     <DialogContent>
@@ -122,6 +134,7 @@ export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdate
           </Label>
           <Input
             id="new-password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             // onChange={(e) => setNewHost({ ...newHost, ip: e.target.value })}
@@ -150,9 +163,32 @@ export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdate
         </div>
       </div>
       <DialogFooter>
-        <Button disabled variant="outline" onClick={() => { setIsOpen(false) }}>Cancel</Button>
-        <Button disabled variant="secondary" onClick={() => { }}>Test</Button>
-        <Button disabled variant="default" onClick={() => { }}>{confirmButtonText}</Button>
+        <Button
+          disabled={isAddPendingDryRun || isAddPending}
+          variant="outline"
+          onClick={() => { setIsOpen(false) }}
+        >
+          Cancel
+        </Button>
+        <ButtonWithState
+          variant="secondary"
+          loading={isAddPendingDryRun}
+          error={isAddErrorDryRun}
+          success={isAddSuccessDryRun}
+          disabled={isAddPendingDryRun || isAddPending}
+          onClick={onConfirmDryRunHandle}
+        >
+          Test
+        </ButtonWithState>
+        <ButtonWithState
+          variant="secondary"
+          loading={isAddPending}
+          error={isAddError}
+          disabled={isAddPendingDryRun || isAddPending}
+          onClick={onConfirmHandle}
+        >
+          {confirmButtonText}
+        </ButtonWithState>
       </DialogFooter>
     </DialogContent>
   </Dialog>
