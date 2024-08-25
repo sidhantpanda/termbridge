@@ -1,6 +1,6 @@
-import { Button } from '@chakra-ui/react'
 import { ArrowLeft, Terminal } from 'lucide-react';
 import React from 'react'
+import { Button } from '../ui/button';
 
 interface LoggedOutProps {
   onHomeRequested: () => void;
@@ -23,7 +23,7 @@ const LoggedOut = ({ onHomeRequested, onReloadTerminalRequested }: LoggedOutProp
 
       <div className="flex flex-col sm:flex-row gap-4">
         <Button
-          // variant="secondary"
+          variant="outline"
           className="flex items-center justify-center gap-2 px-6 py-4 text-base"
           onClick={homeRequest}
         >
