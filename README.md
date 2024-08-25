@@ -68,7 +68,7 @@ services:
       - 3000:3000
 ```
 
-<img width="1324" alt="Termbridge Homepage" src="https://github.com/user-attachments/assets/a5b94432-bc6c-4b98-a0db-50b2fe6435c7">
+<img width="1486" alt="Termbridge Homepage" src="https://github.com/user-attachments/assets/3a8eb44e-9079-4a91-be3e-5b7591d808de">
 <img width="1105" alt="Termbridge Terminal Page" src="https://github.com/user-attachments/assets/ba73419a-32cc-48c3-b4ee-92b56a7bc961">
 
 ### Motivations for this project
