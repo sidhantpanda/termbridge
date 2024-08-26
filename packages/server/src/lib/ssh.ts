@@ -1,8 +1,42 @@
 import { Client, ConnectConfig } from 'ssh2';
 
-export const isConnectionValid = async (options: ConnectConfig) => {
-  const conn = new Client();
+export const isPasswordRequired = async (options: ConnectConfig) => {
   return new Promise((resolve, reject) => {
+    const conn = new Client();
+    conn.on('ready', () => {
+      // If connection is successful, it means no password was required
+      resolve(false);
+      conn.end();
+    }).on('keyboard-interactive', () => {
+      // If the server requests keyboard-interactive authentication, password is required
+      resolve(true);
+      conn.end();
+    }).on('error', (err) => {
+      // Handle connection errors
+      if (err.message.includes('All configured authentication methods failed')) {
+        resolve(true);
+      } else {
+        reject(`SSH connection error: ${err.message}`);
+      }
+      conn.end();
+    }).connect({
+      ...options,
+      tryKeyboard: true,
+      readyTimeout: 5000, // Timeout after 5 seconds
+      authHandler: (methods) => {
+        if (methods.includes('password')) {
+          // Password is required if this method is presented
+          return { method: 'password' };
+        }
+        return { method: null };
+      },
+    });
+  });
+};
+
+export const isConnectionValid = async (options: ConnectConfig) => {
+  return new Promise((resolve, reject) => {
+    const conn = new Client();
     const timeout = setTimeout(() => {
       console.log({ conn })
       conn.destroy();
