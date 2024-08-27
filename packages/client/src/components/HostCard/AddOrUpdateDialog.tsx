@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { useNavigate } from 'react-router-dom';
 import { useCreateOrUpdateHost } from '@/hooks/mutations/useCreateOrUpdateHost';
 import { ButtonWithState } from '../ui-custom/ButtonWithState';
 
@@ -24,7 +23,6 @@ interface AddOrUpdateDialogProps {
 }
 
 export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdateDialogProps) => {
-  const navigate = useNavigate();
   const [name, setName] = useState(hostConfig?.name ?? '');
   const [host, setHost] = useState(hostConfig?.host ?? '');
   const [username, setUsername] = useState(hostConfig?.username ?? '');
@@ -134,11 +132,11 @@ export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdate
           </Label>
           <Input
             id="new-password"
+            className="col-span-3"
+            placeholder={mode === DialogMode.ADD ? '' : 'Leave empty to keep the current password'}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            // onChange={(e) => setNewHost({ ...newHost, ip: e.target.value })}
-            className="col-span-3"
           />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
