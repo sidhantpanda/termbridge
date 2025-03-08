@@ -1,11 +1,18 @@
 import couch from 'nano';
 import { COUCHDB_HOST, COUCHDB_PASS, COUCHDB_PORT, COUCHDB_USER } from '../config';
 
+let nano: couch.ServerScope | null = null;
+
 export const getNano = (): couch.ServerScope => {
+  if (nano) {
+    return nano;
+  }
+
   const host = COUCHDB_HOST;
   const port = COUCHDB_PORT;
   const url = `http://${COUCHDB_USER}:${COUCHDB_PASS}@${host}:${port}`;
-  const nano = couch(url);
+  console.log(`Connecting to CouchDB at ${host}:${port}`);
+  nano = couch(url);
   return nano;
 };
 
