@@ -49,8 +49,6 @@ export const makeApiCall = async <
 
   const fullUrl = `${host}${url}`;
 
-  console.log({ hostname, port, protocol, host, fullUrl })
-
   try {
     const req = request(method, fullUrl).ok((res) => res.status >= 200); // Will handle this error code ourselves
 

@@ -2,10 +2,14 @@ import React from 'react';
 import { RemoteHost } from '@termbridge/common';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { PencilIcon, ServerIcon, TrashIcon } from 'lucide-react';
+import { PencilIcon, ServerIcon, TrashIcon, ShipWheel } from 'lucide-react';
 import { AddOrUpdateDialog } from './AddOrUpdateDialog';
 import { DeleteDialog } from './DeleteDialog';
 import { Button } from '../ui/button';
+import useDockerContainers from '@/hooks/useDockerContainers';
+import { Separator } from '@radix-ui/react-select';
+import { Badge } from '../ui/badge';
+import DockerIcon from '../icons/docker';
 
 
 export interface HostCardProps {
@@ -17,6 +21,8 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
   const navigate = useNavigate();
   const [showEditFlow, setShowEditFlow] = React.useState(false);
   const [showDeleteFlow, setShowDeleteFlow] = React.useState(false);
+  const { containers } = useDockerContainers(_id);
+  // console.log(containers);
 
   const handleConnect = () => {
     navigate(`remotes/${_id}-${name}/terminal`)
@@ -33,7 +39,7 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
 
   return (
     <>
-      <Card>
+      <Card className="flex flex-col h-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ServerIcon className="h-8 w-8" />
@@ -44,8 +50,24 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           <p className="text-sm text-muted-foreground">IP: {host}</p>
           <p className="text-sm text-muted-foreground">Username: {username}</p>
           <p className="text-sm text-muted-foreground">Port: {port}</p>
+          <>
+            <Separator className="my-3" />
+            <div className="space-y-2">
+              <div className="flex items-center gap-1">
+                <DockerIcon size={18} />
+                <span className="text-sm font-medium">Docker Containers</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {containers.map((container, index) => (
+                  <Badge key={index} variant="outline" className="text-xs">
+                    {container.Names}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </>
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-between mt-auto">
           <Button onClick={() => handleConnect()} >
             Connect
           </Button>
