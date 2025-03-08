@@ -11,8 +11,6 @@ const getContainers: RequestHandler = async (req: Request, res) => {
   const sudoPassword = remote.password;
 
   conn.on('ready', () => {
-    console.log('SSH Connection Ready');
-
     // Execute the docker ps command with JSON formatting.
     // The --format '{{json .}}' flag outputs each container as a JSON object on its own line.
     conn.exec("sudo docker ps --format '{{json .}}'", { pty: true }, (err, stream) => {
