@@ -1,61 +1,27 @@
 import { Request, RequestHandler } from 'express';
-import { RemoteHost } from '@termbridge/common';
-import RemoteHosts from '../../couchdb/RemoteHosts';
-import { Client } from 'ssh2';
+import { getRedisClient } from '../../lib/redis';
+import { getDockerContainers } from '../../lib/docker';
 
 const getContainers: RequestHandler = async (req: Request, res) => {
-  const remote = await RemoteHosts.get(req.params.id);
-  // const hosts = await RemoteHosts.list({ include_docs: true });
-  const conn = new Client();
-  const sshConfig = remote as RemoteHost;
-  const sudoPassword = remote.password;
+  const remoteId = req.params.id;
 
-  conn.on('ready', () => {
-    // Execute the docker ps command with JSON formatting.
-    // The --format '{{json .}}' flag outputs each container as a JSON object on its own line.
-    conn.exec("sudo docker ps --format '{{json .}}'", { pty: true }, (err, stream) => {
-      if (err) {
-        console.error('Error executing command:', err);
-        return conn.end();
-      }
+  const client = await getRedisClient();
 
-      let output = '';
-      let sudoPasswordSent = false;
+  if (client) {
+    const dataInCache = await client.get(`${remoteId}:containers`);
+    if (dataInCache) {
+      console.log('Containers data found in cache for ', remoteId);
+      return res.send({ containers: JSON.parse(dataInCache) });
+    }
+  }
 
-      stream.on('data', (data: Buffer) => {
-        const text = data.toString();
-        // Detect sudo prompt and send the password if not already done
-        if (text.includes('[sudo] password for') && !sudoPasswordSent) {
-          console.log('Sudo password prompt detected. Sending password...');
-          stream.write(`${sudoPassword}\n`);
-          sudoPasswordSent = true;
-        } else {
-          output += text;
-        }
-      });
+  const containers = await getDockerContainers(remoteId);
 
-      stream.stderr.on('data', (data) => {
-        console.error('STDERR:', data.toString());
-      });
-
-      stream.on('close', (code: string, signal: string) => {
-        // console.log(`Command finished with code ${code} and signal ${signal}`);
-        // Process the output: each non-empty line should be a JSON string
-        try {
-          const lines = output.split('\n').filter(line => line.trim() !== '');
-          const jsonArray = lines.map(line => JSON.parse(line));
-          res.send({ containers: jsonArray });
-        } catch (parseErr) {
-          console.error('Error parsing JSON:', parseErr);
-          console.log('Raw Output:', output);
-        }
-        conn.end();
-      });
-    });
-  }).on('error', (err) => {
-    console.error('Connection Error:', err);
-  }).connect(sshConfig);
-
+  if (client) {
+    console.log('Caching containers data for ', remoteId);
+    client.setEx(`${remoteId}:containers`, 30, JSON.stringify(containers));
+  }
+  return res.send({ containers });
 };
 
 export default getContainers;

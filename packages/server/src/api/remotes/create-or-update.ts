@@ -2,7 +2,7 @@ import { Request, RequestHandler } from 'express';
 import Joi from 'joi';
 import { CreateOrUpdateHostRequestBody } from '@termbridge/common';
 import RemoteHosts from '../../couchdb/RemoteHosts';
-import { isConnectionValid } from '../../lib/ssh';
+import { isConnectionValid } from '../../lib/ssh/connection';
 
 const createOrUpdateSchema = Joi.object({
   remote: Joi.object({

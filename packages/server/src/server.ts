@@ -5,6 +5,7 @@ import cors from 'cors';
 import router from './routes';
 import { ensureDBs } from './couchdb/init';
 import { CLIENT_DIST, IS_DEV } from './config';
+import { getRedisClient } from './lib/redis';
 
 const port = IS_DEV ? 3001 : 3000;
 
@@ -29,6 +30,7 @@ app.get('/*', (req, res) => {
 export const startServer = async () => {
   return new Promise<Server>(async (resolve) => {
     await ensureDBs();
+    await getRedisClient();
     server.listen(port, function () {
       console.log(`Server is listening on port ${port}`);
       resolve(server);
