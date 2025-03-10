@@ -1,5 +1,6 @@
 services:
   termbridge:
+    container_name: termbridge
     build:
       context: .
       dockerfile: Dockerfile
