@@ -60,7 +60,12 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
               <div className="flex flex-wrap gap-2">
                 {containers.map((container, index) => (
                   <Badge key={index} variant="outline" className="text-xs">
-                    {container.Names}
+                    {container.Names}:
+                    <span key={index} className="text-xs">
+                      {container.Ports.split(',').map((mapping) => {
+                        return mapping.split('->')[0].split(':')[1]
+                      }).filter(item => !!item).join(', ')}
+                    </span>
                   </Badge>
                 ))}
               </div>
