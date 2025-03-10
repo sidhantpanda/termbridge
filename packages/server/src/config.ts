@@ -1,5 +1,7 @@
+import path from 'path';
+
 export const IS_DEV = process.env.IS_DEV === '1';
-export const CLIENT_DIST = process.env.CLIENT_DIST ?? 'client/dist';
+export const CLIENT_DIST = path.resolve(process.cwd(), '..', process.env.CLIENT_DIST ?? 'client/dist');
 
 export const COUCHDB_HOST = process.env.COUCHDB_HOST ?? 'localhost';
 export const COUCHDB_PORT = process.env.COUCHDB_PORT ?? '5984';

@@ -18,9 +18,13 @@ app.use(cors({
 
 const server = http.createServer(app);
 
+console.log({ CLIENT_DIST })
+
 app.use(express.static(CLIENT_DIST));
 app.use('/api', router);
-app.use('*', express.static(CLIENT_DIST));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(CLIENT_DIST, 'index.html'));
+});
 
 export const startServer = async () => {
   return new Promise<Server>(async (resolve) => {
