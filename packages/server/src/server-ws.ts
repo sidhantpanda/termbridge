@@ -2,7 +2,7 @@ import { Server } from 'http';
 import WebSocket from 'ws';
 import { Client } from 'ssh2';
 import RemoteHosts from './couchdb/RemoteHosts';
-import { startTerminalSession } from './lib/ssh';
+import { startTerminalSession } from './lib/ssh/terminal-session';
 
 // https://chatgpt.com/share/609b8f6b-8286-4536-83ba-6df7eff9adfa
 
