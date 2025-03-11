@@ -19,4 +19,5 @@ const DBs = [REMOTE_HOSTS_DB_NAME];
 
 export const ensureDBs = async () => {
   await Promise.all(DBs.map(createOrGetDb));
+  console.log('Databases are ready');
 };
