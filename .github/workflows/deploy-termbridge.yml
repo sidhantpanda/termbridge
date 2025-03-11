@@ -1,0 +1,19 @@
+name: Deploy Termbridge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-playbook:
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull latest changes
+        working-directory: /home/sidhant/code/github/termbridge
+        run: git pull
+      
+      - name: Build and deploy
+        working-directory: /home/sidhant/code/github/termbridge
+        run: docker compose up --build --force-recreate -d
