@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  run-playbook:
+  build-and-deploy:
     runs-on: self-hosted
 
     steps:
