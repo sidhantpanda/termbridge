@@ -10,7 +10,7 @@ const getContainers: RequestHandler = async (req: Request, res) => {
   if (client) {
     const dataInCache = await client.get(`${remoteId}:containers`);
     if (dataInCache) {
-      console.log('Containers data found in cache for ', remoteId);
+      // console.log('Containers data found in cache for ', remoteId);
       return res.send({ containers: JSON.parse(dataInCache) });
     }
   }
@@ -18,7 +18,7 @@ const getContainers: RequestHandler = async (req: Request, res) => {
   const containers = await getDockerContainers(remoteId);
 
   if (client) {
-    console.log('Caching containers data for ', remoteId);
+    // console.log('Caching containers data for ', remoteId);
     client.setEx(`${remoteId}:containers`, 30, JSON.stringify(containers));
   }
   return res.send({ containers });

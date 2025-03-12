@@ -1,6 +1,8 @@
 import express from 'express';
 import http, { Server } from 'http';
 import path from 'path';
+import morgan from 'morgan';
+import promMid from 'express-prometheus-middleware';
 import cors from 'cors';
 import router from './routes';
 import { ensureDBs } from './couchdb/init';
@@ -12,6 +14,15 @@ const port = IS_DEV ? 3001 : 3000;
 const app = express();
 
 app.use(express.json());
+app.use(morgan('dev'));
+app.use(promMid({
+  metricsPath: '/metrics',
+  customLabels: [IS_DEV ? 'dev' : 'prod'],
+  collectDefaultMetrics: true,
+  requestDurationBuckets: [0.1, 0.5, 1, 1.5],
+  requestLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
+  responseLengthBuckets: [512, 1024, 5120, 10240, 51200, 102400],
+}));
 
 app.use(cors({
   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
