@@ -1,6 +1,6 @@
 import React from 'react';
 import { RemoteHost } from '@termbridge/common';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { PencilIcon, ServerIcon, TrashIcon, ShipWheel } from 'lucide-react';
 import { AddOrUpdateDialog } from './AddOrUpdateDialog';
@@ -73,8 +73,11 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           </>
         </CardContent>
         <CardFooter className="flex justify-between mt-auto">
-          <Button onClick={() => handleConnect()} >
-            Connect
+          <Button>
+            <Link to={`remotes/${_id}-${name}/terminal`}>
+              {/* <ShipWheel className="h-4 w-4 mr-2" /> */}
+              Connect
+            </Link>
           </Button>
           <div className="flex gap-2">
             <Button
