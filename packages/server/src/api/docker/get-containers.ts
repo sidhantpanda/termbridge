@@ -14,14 +14,19 @@ const getContainers: RequestHandler = async (req: Request, res) => {
       return res.send({ containers: JSON.parse(dataInCache) });
     }
   }
+  try {
 
-  const containers = await getDockerContainers(remoteId);
+    const containers = await getDockerContainers(remoteId);
 
-  if (client) {
-    // console.log('Caching containers data for ', remoteId);
-    client.setEx(`${remoteId}:containers`, 30, JSON.stringify(containers));
+    if (client) {
+      // console.log('Caching containers data for ', remoteId);
+      client.setEx(`${remoteId}:containers`, 30, JSON.stringify(containers));
+    }
+    return res.send({ containers });
+  } catch (error) {
+    console.error('Error fetching containers:', error);
+    return res.status(500).send({ error: 'Error fetching containers' });
   }
-  return res.send({ containers });
 };
 
 export default getContainers;
