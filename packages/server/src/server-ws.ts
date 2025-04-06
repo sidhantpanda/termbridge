@@ -23,29 +23,41 @@ export const startWsServer = (server: Server) => {
             }, null, 2)
           }));
         } else {
-          const terminalSession = await startTerminalSession({
-            config: hostConfig,
-            onData: (data: string) => {
-              ws.send(JSON.stringify({
-                action: 'data',
-                data
-              }));
-            },
-            onLogout: () => {
-              ws.send(JSON.stringify({
-                action: 'logout'
-              }));
-            }
-          });
-          ws.on('message', (message) => {
-            const msg = JSON.parse(message as unknown as string);
-            if (msg.action === 'input') {
-              terminalSession.write(msg.data);
-            }
-            if (msg.action === 'resize') {
-              terminalSession.resize(msg.cols, msg.rows, msg.width, msg.height);
-            }
-          });
+          try {
+            const terminalSession = await startTerminalSession({
+              config: hostConfig,
+              onData: (data: string) => {
+                ws.send(JSON.stringify({
+                  action: 'data',
+                  data
+                }));
+              },
+              onLogout: () => {
+                ws.send(JSON.stringify({
+                  action: 'logout'
+                }));
+              }
+            });
+            ws.on('message', (message) => {
+              const msg = JSON.parse(message as unknown as string);
+              if (msg.action === 'input') {
+                terminalSession.write(msg.data);
+              }
+              if (msg.action === 'resize') {
+                terminalSession.resize(msg.cols, msg.rows, msg.width, msg.height);
+              }
+            });
+          } catch (error) {
+            console.error('Error starting terminal session:', error);
+            ws.send(JSON.stringify({
+              action: 'data',
+              data: JSON.stringify({
+                status: 500,
+                error: 'error starting terminal session',
+                detail: `Error starting terminal session: ${error}`
+              }, null, 2)
+            }));
+          }
         }
       }
     });
