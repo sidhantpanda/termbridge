@@ -8,6 +8,7 @@ type PartialConnectConfig = Omit<
 
 interface RemoteHost extends PartialConnectConfig {
   name: string;
+  tailscaleIps?: string[];
 }
 
 export default RemoteHost;

@@ -8,6 +8,7 @@ type ConnectConfigPartial = Omit<ConnectConfig, 'debug' | 'hostVerifier'>;
 
 export interface RemoteHostDoc extends ConnectConfigPartial {
   name: string;
+  tailscaleIps?: string[];
 }
 
 const RemoteHosts = getDb<RemoteHostDoc>(REMOTE_HOSTS_DB_NAME);

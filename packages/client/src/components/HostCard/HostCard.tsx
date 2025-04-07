@@ -10,6 +10,7 @@ import useDockerContainers from '@/hooks/useDockerContainers';
 import { Separator } from '@radix-ui/react-select';
 import { Badge } from '../ui/badge';
 import DockerIcon from '../icons/docker';
+import useTailscaleInfo from '@/hooks/useTailscaleInfo';
 
 
 export interface HostCardProps {
@@ -22,6 +23,9 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
   const [showEditFlow, setShowEditFlow] = React.useState(false);
   const [showDeleteFlow, setShowDeleteFlow] = React.useState(false);
   const { containers } = useDockerContainers(_id);
+  const { info: tailscaleInfo } = useTailscaleInfo(_id);
+
+  console.log('tailscaleInfo', tailscaleInfo);
   // console.log(containers);
 
   const handleConnect = () => {
@@ -50,6 +54,7 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           <p className="text-sm text-muted-foreground">IP: {host}</p>
           <p className="text-sm text-muted-foreground">Username: {username}</p>
           <p className="text-sm text-muted-foreground">Port: {port}</p>
+          <p className="text-sm text-muted-foreground">Tailscale IP(s): {tailscaleInfo ? `[${tailscaleInfo.ips.join(', ')}]`: `undefined`}</p>
           <>
             <Separator className="my-3" />
             <div className="space-y-2">
