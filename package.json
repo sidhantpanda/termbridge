@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "concurrently \"yarn:dev:server\" \"yarn:dev:client\"",
+    "dev": "concurrently \"yarn:dev:server\" \"yarn:dev:common\" \"yarn:dev:client\"",
+    "dev:common": "cd packages/common && yarn dev",
     "dev:server": "cd packages/server && yarn dev",
     "dev:client": "cd packages/client && yarn dev",
     "build": "concurrently \"yarn:build:common\" \"yarn:build:client\" \"yarn:build:server\"",

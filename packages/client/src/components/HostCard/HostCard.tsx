@@ -56,7 +56,7 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           <p className="text-sm text-muted-foreground">Port: {port}</p>
           <p className="text-sm text-muted-foreground">Tailscale IP(s): {tailscaleInfo ? `[${tailscaleInfo.ips.join(', ')}]`: `undefined`}</p>
           <>
-            <Separator className="my-3" />
+            {/* <Separator className="my-3" />
             <div className="space-y-2">
               <div className="flex items-center gap-1">
                 <DockerIcon size={18} />
@@ -74,7 +74,7 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
                   </Badge>
                 ))}
               </div>
-            </div>
+            </div> */}
           </>
         </CardContent>
         <CardFooter className="flex justify-between mt-auto">
