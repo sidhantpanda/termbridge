@@ -19,16 +19,16 @@ docker run -d \
   -e COUCHDB_PORT=5984 \
   -e COUCHDB_USER=COUCH_USER \
   -e COUCHDB_PASS=COUCHDB_PASS \
-  sidhantpanda/termbridge:latest
+  ghcr.io/sidhantpanda/termbridge:latest
 ```
 
-### Docker Compose (with CouchDB)
+### Docker Compose
 
 ```yaml
 services:
   termbridge:
     container_name: termbridge
-    image: sidhantpanda/termbridge
+    image: ghcr.io/sidhantpanda/termbridge
     restart: unless-stopped
     environment:
       - COUCHDB_HOST=couchdb
@@ -51,22 +51,6 @@ services:
       - 5984:5984
 ```
 
-### Docker Compose (with existing CouchDB)
-
-```yaml
-services:
-  termbridge:
-    container_name: termbridge
-    image: sidhantpanda/termbridge
-    restart: unless-stopped
-    environment:
-      - COUCHDB_HOST=you-couch-db-host
-      - COUCHDB_PORT=5984
-      - COUCHDB_USER=${COUCHDB_USER:-admin}
-      - COUCHDB_PASS=${COUCHDB_PASS:-password}
-    ports:
-      - 3000:3000
-```
 
 <img width="1486" alt="Termbridge Homepage" src="https://github.com/user-attachments/assets/3a8eb44e-9079-4a91-be3e-5b7591d808de">
 <img width="1105" alt="Termbridge Terminal Page" src="https://github.com/user-attachments/assets/ba73419a-32cc-48c3-b4ee-92b56a7bc961">
