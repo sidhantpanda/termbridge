@@ -11,6 +11,7 @@ import { Separator } from '@radix-ui/react-select';
 import { Badge } from '../ui/badge';
 import DockerIcon from '../icons/docker';
 import useTailscaleInfo from '@/hooks/useTailscaleInfo';
+import useAppConfig from '@/hooks/useAppConfig';
 
 
 export interface HostCardProps {
@@ -24,6 +25,8 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
   const [showDeleteFlow, setShowDeleteFlow] = React.useState(false);
   const { containers } = useDockerContainers(_id);
   const { info: tailscaleInfo } = useTailscaleInfo(_id);
+
+  const { config } = useAppConfig();
 
   console.log('tailscaleInfo', tailscaleInfo);
   // console.log(containers);
@@ -54,28 +57,34 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           <p className="text-sm text-muted-foreground">IP: {host}</p>
           <p className="text-sm text-muted-foreground">Username: {username}</p>
           <p className="text-sm text-muted-foreground">Port: {port}</p>
-          <p className="text-sm text-muted-foreground">Tailscale IP(s): {tailscaleInfo ? `[${tailscaleInfo.ips.join(', ')}]`: `undefined`}</p>
-          <>
-            {/* <Separator className="my-3" />
-            <div className="space-y-2">
-              <div className="flex items-center gap-1">
-                <DockerIcon size={18} />
-                <span className="text-sm font-medium">Docker Containers</span>
+          {config.tailscaleInfo && (
+            <p className="text-sm text-muted-foreground">Tailscale IP(s): {tailscaleInfo ? `[${tailscaleInfo.ips.join(', ')}]` : `undefined`}</p>
+          )}
+
+          {config.dockerContainers && (
+            <>
+              <Separator className="my-3" />
+              <div className="space-y-2">
+                <div className="flex items-center gap-1">
+                  <DockerIcon size={18} />
+                  <span className="text-sm font-medium">Docker Containers</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {containers.map((container, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {container.Names}:
+                      <span key={index} className="text-xs">
+                        {container.Ports.split(',').map((mapping) => {
+                          return mapping.split('->')[0].split(':')[1]
+                        }).filter(item => !!item).join(', ')}
+                      </span>
+                    </Badge>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {containers.map((container, index) => (
-                  <Badge key={index} variant="outline" className="text-xs">
-                    {container.Names}:
-                    <span key={index} className="text-xs">
-                      {container.Ports.split(',').map((mapping) => {
-                        return mapping.split('->')[0].split(':')[1]
-                      }).filter(item => !!item).join(', ')}
-                    </span>
-                  </Badge>
-                ))}
-              </div>
-            </div> */}
-          </>
+            </>
+          )}
+
         </CardContent>
         <CardFooter className="flex justify-between mt-auto">
           <Button>
