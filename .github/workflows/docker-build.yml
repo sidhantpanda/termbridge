@@ -33,15 +33,3 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-
-  deploy:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Pull latest changes
-        working-directory: /home/sidhant/code/github/termbridge
-        run: git pull
-
-      - name: Build and deploy
-        working-directory: /home/sidhant/code/github/termbridge
-        run: docker compose up --build --force-recreate -d
