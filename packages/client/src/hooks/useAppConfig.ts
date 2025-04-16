@@ -2,11 +2,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export interface AppConfig {
   tailscaleInfo: boolean;
+  useTailscaleIpForContainers: boolean;
   dockerContainers: boolean;
 }
 
 const defaultConfig: AppConfig = {
   tailscaleInfo: true,
+  useTailscaleIpForContainers: false,
   dockerContainers: true,
 };
 

@@ -1,17 +1,15 @@
 import React from 'react';
 import { RemoteHost } from '@termbridge/common';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { PencilIcon, ServerIcon, TrashIcon, ShipWheel } from 'lucide-react';
+import { PencilIcon, ServerIcon, TrashIcon } from 'lucide-react';
 import { AddOrUpdateDialog } from './AddOrUpdateDialog';
 import { DeleteDialog } from './DeleteDialog';
 import { Button } from '../ui/button';
-import useDockerContainers from '@/hooks/useDockerContainers';
 import { Separator } from '@radix-ui/react-select';
-import { Badge } from '../ui/badge';
-import DockerIcon from '../icons/docker';
-import useTailscaleInfo from '@/hooks/useTailscaleInfo';
 import useAppConfig from '@/hooks/useAppConfig';
+import { DockerContainerInfo } from './DockerContainerInfo/DockerContainerInfo';
+import { TailscaleInfo } from './TailscaleInfo';
 
 
 export interface HostCardProps {
@@ -20,27 +18,16 @@ export interface HostCardProps {
 
 const HostCard = ({ hostConfig }: HostCardProps) => {
   const { _id, name, host, username, port } = hostConfig;
-  const navigate = useNavigate();
   const [showEditFlow, setShowEditFlow] = React.useState(false);
   const [showDeleteFlow, setShowDeleteFlow] = React.useState(false);
-  const { containers } = useDockerContainers(_id);
-  const { info: tailscaleInfo } = useTailscaleInfo(_id);
 
   const { config } = useAppConfig();
-
-  console.log('tailscaleInfo', tailscaleInfo);
-  // console.log(containers);
-
-  const handleConnect = () => {
-    navigate(`remotes/${_id}-${name}/terminal`)
-  }
 
   const handleEdit = () => {
     setShowEditFlow(true);
   }
 
   const handleRemove = () => {
-    // confirm(`Are you sure you want to delete ${name}?`) && removeRemote({ id: _id });
     setShowDeleteFlow(true);
   }
 
@@ -58,30 +45,13 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           <p className="text-sm text-muted-foreground">Username: {username}</p>
           <p className="text-sm text-muted-foreground">Port: {port}</p>
           {config.tailscaleInfo && (
-            <p className="text-sm text-muted-foreground">Tailscale IP(s): {tailscaleInfo ? `[${tailscaleInfo.ips.join(', ')}]` : `undefined`}</p>
+            <TailscaleInfo remoteId={_id} />
           )}
 
           {config.dockerContainers && (
             <>
               <Separator className="my-3" />
-              <div className="space-y-2">
-                <div className="flex items-center gap-1">
-                  <DockerIcon size={18} />
-                  <span className="text-sm font-medium">Docker Containers</span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {containers.map((container, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      {container.Names}:
-                      <span key={index} className="text-xs">
-                        {container.Ports.split(',').map((mapping) => {
-                          return mapping.split('->')[0].split(':')[1]
-                        }).filter(item => !!item).join(', ')}
-                      </span>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
+              <DockerContainerInfo remoteId={_id} />
             </>
           )}
 
@@ -112,7 +82,7 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
             </Button>
           </div>
         </CardFooter>
-      </Card>
+      </Card >
       <AddOrUpdateDialog
         isOpen={showEditFlow}
         hostConfig={hostConfig}

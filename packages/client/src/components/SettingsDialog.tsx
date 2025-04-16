@@ -48,6 +48,22 @@ export const SettingsDialog = ({ isOpen, setIsOpen }: SettingsDialogProps) => {
       <div className="flex flex-row items-center justify-between rounded-lg border p-4">
         <div className="space-y-0.5">
           <Label className="text-base">
+            Use Tailscale IP for container links
+          </Label>
+        </div>
+        {/* <FormControl> */}
+        <Switch
+          checked={config.useTailscaleIpForContainers}
+          onCheckedChange={useTailscaleIpForContainers => {
+            setConfig({ ...config, useTailscaleIpForContainers })
+          }}
+        />
+        {/* </FormControl> */}
+      </div>
+
+      <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+        <div className="space-y-0.5">
+          <Label className="text-base">
             Show Docker Containers
           </Label>
         </div>
