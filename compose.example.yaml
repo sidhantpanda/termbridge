@@ -8,6 +8,11 @@ services:
       - COUCHDB_PORT=5984
       - COUCHDB_USER=${COUCHDB_USER:-admin}
       - COUCHDB_PASS=${COUCHDB_PASS:-password}
+      - PG_HOST=${PG_HOST}
+      - PG_PORT=${PG_PORT}
+      - PG_USER=${PG_USER}
+      - PG_PASS=${PG_PASS}
+      - PG_DB=${PG_DB}
     ports:
       - 3000:3000
   couchdb:
