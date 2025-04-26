@@ -11,11 +11,10 @@ import { getTerminalGridUnits } from './terminal-utils';
 
 interface TerminalContainerProps extends FlexProps {
   id: string;
-  name: string;
   onLogout?: () => void;
 }
 
-const TerminalContainer = ({ id, name, onLogout, ...rest }: TerminalContainerProps) => {
+const TerminalContainer = ({ id, onLogout, ...rest }: TerminalContainerProps) => {
   const [terminalId] = useState(v4());
   const { width, height } = useWindowSize();
   const [terminal, setTerminal] = useState<Terminal | null>();

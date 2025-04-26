@@ -10,8 +10,7 @@ const Terminal = () => {
   const { id_host } = useParams();
   const navigate = useNavigate();
   const [isLoggedOut, setIsLoggedOut] = React.useState(false);
-  const [id, ...rest] = id_host.split('-');
-  const { remote } = useRemoteById(id);
+  const { remote } = useRemoteById(id_host);
 
   let pageTitle = 'Termbridge';
   if (remote) {
@@ -41,8 +40,7 @@ const Terminal = () => {
 
   let pageContents = (
     <TerminalContainer
-      id={id}
-      name={rest.join('-')}
+      id={id_host}
       h="100vh"
       w="100vw"
       onLogout={() => setIsLoggedOut(true)}

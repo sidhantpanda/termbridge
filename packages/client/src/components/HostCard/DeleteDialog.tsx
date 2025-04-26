@@ -20,7 +20,7 @@ export const DeleteDialog = ({ isOpen, hostConfig, setIsOpen }: EditDialogProps)
     }
   }, [isSuccess, isPending, isError])
   const handleRemove = () => {
-    removeRemote({ id: hostConfig._id });
+    removeRemote({ id: hostConfig.id });
   }
   return <Dialog open={isOpen} onOpenChange={setIsOpen}>
     <DialogContent>

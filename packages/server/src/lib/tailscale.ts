@@ -1,15 +1,20 @@
-import { DockerContainer, RemoteHost } from '@termbridge/common';
 import { Client } from 'ssh2';
-import RemoteHosts from '../couchdb/RemoteHosts';
+import { AppDataSource } from '../postgres/data-source';
+import { ConnectConfigEntity } from '../postgres/models/RemoteHost';
 
 const command = "tailscale ip";
 
 export const getTailscaleInfo = (id: string): Promise<string[]> => {
   return new Promise<string[]>(async (resolve, reject) => {
-    const remote = await RemoteHosts.get(id);
+    const connectConfigsRepo = AppDataSource.getRepository(ConnectConfigEntity);
+    const remote = await connectConfigsRepo.findOneBy({ id });
+    // const remote = await RemoteHosts.get(id);
     const conn = new Client();
-    const sshConfig = remote as RemoteHost;
-    const sudoPassword = remote.password;
+    if (!remote) {
+      reject(new Error('Remote not found'));
+      return;
+    }
+    const sshConfig = remote;
 
     conn.on('ready', () => {
       // Execute the docker ps command with JSON formatting.

@@ -2,7 +2,8 @@ import RemoteHost from '../../models/RemoteHost';
 
 export interface CreateOrUpdateHostRequestBody {
   remote: {
-    _id?: string,
+    id? : string,
+    // _id?: string,
     name: string,
     host: string,
     port: number,

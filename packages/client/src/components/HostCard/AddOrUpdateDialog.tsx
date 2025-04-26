@@ -12,8 +12,8 @@ enum DialogMode {
   UPDATE = 'UPDATE'
 }
 
-interface CreateOrUpdateComponentRemoteHost extends Omit<RemoteHost, '_id'> {
-  _id?: string;
+interface CreateOrUpdateComponentRemoteHost extends Omit<RemoteHost, 'id'> {
+  id?: string;
 }
 
 interface AddOrUpdateDialogProps {
@@ -45,7 +45,7 @@ export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdate
     error: addError,
   } = useCreateOrUpdateHost({ isDryRun: false });
 
-  const mode = !!hostConfig?._id ? DialogMode.UPDATE : DialogMode.ADD;
+  const mode = !!hostConfig?.id ? DialogMode.UPDATE : DialogMode.ADD;
   const title = mode === DialogMode.ADD ? 'Add New Host' : 'Update Host';
   const confirmButtonText = mode === DialogMode.ADD ? 'Add Host' : 'Update Host';
 
@@ -58,7 +58,7 @@ export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdate
   const onConfirmDryRunHandle = async () => {
     createOrUpdateHostDryRun({
       remote: {
-        _id: hostConfig?._id,
+        id: hostConfig?.id,
         name,
         host,
         port: port === '' ? 22 : parseInt(port),
@@ -71,7 +71,7 @@ export const AddOrUpdateDialog = ({ isOpen, hostConfig, setIsOpen }: AddOrUpdate
   const onConfirmHandle = async () => {
     createOrUpdateHost({
       remote: {
-        _id: hostConfig?._id,
+        id: hostConfig?.id,
         name,
         host,
         port: port === '' ? 22 : parseInt(port),

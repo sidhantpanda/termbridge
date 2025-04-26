@@ -1,33 +1,36 @@
 import { Request, RequestHandler } from 'express';
 import { getRedisClient } from '../../lib/redis';
 import { getTailscaleInfo as getTSCommand } from '../../lib/tailscale';
-import RemoteHosts from '../../couchdb/RemoteHosts';
+import { AppDataSource } from '../../postgres/data-source';
+import { ConnectConfigEntity } from '../../postgres/models/RemoteHost';
 
 const CACHE_TTL = 5 * 60; // 5 minutes
 
 const getTailscaleInfo: RequestHandler = async (req: Request, res) => {
-  const _id = req.params.id;
+  const id = req.params.id;
   const client = await getRedisClient();
 
   if (client) {
-    const cached = await client.get(`${_id}:tailscale-info`);
+    const cached = await client.get(`${id}:tailscale-info`);
     if (cached) {
       // console.log('Using cached tailscale data for ', _id);
       return res.send({ ips: JSON.parse(cached) });
     }
   }
 
-  const existing = _id ? (await RemoteHosts.get(_id)) : undefined;
-  if (_id && !existing) {
+  // const existing = id ? (await RemoteHosts.get(id)) : undefined;
+  const connectConfigsRepo = AppDataSource.getRepository(ConnectConfigEntity);
+  const existing = await connectConfigsRepo.findOneBy({ id: req.params.id });
+  if (id && !existing) {
     res.status(404).send({ message: 'Remote not found' });
     return;
   }
 
   try {
-    const ips = await getTSCommand(_id);
+    const ips = await getTSCommand(id);
     if (client) {
-      console.log('Caching tailscale info for ', _id);
-      client.setEx(`${_id}:tailscale-info`, CACHE_TTL, JSON.stringify(ips));
+      console.log('Caching tailscale info for ', id);
+      client.setEx(`${id}:tailscale-info`, CACHE_TTL, JSON.stringify(ips));
     }
     return res.send({ ips });
   } catch (error) {

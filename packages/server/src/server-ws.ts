@@ -1,8 +1,9 @@
 import { Server } from 'http';
 import WebSocket from 'ws';
 import { Client } from 'ssh2';
-import RemoteHosts from './couchdb/RemoteHosts';
 import { startTerminalSession } from './lib/ssh/terminal-session';
+import { AppDataSource } from './postgres/data-source';
+import { ConnectConfigEntity } from './postgres/models/RemoteHost';
 
 // https://chatgpt.com/share/609b8f6b-8286-4536-83ba-6df7eff9adfa
 
@@ -12,7 +13,9 @@ export const startWsServer = (server: Server) => {
     ws.on('message', async function incoming(message) {
       const data = JSON.parse(message as unknown as string);
       if (data.action === 'connect') {
-        const hostConfig = await RemoteHosts.get(data.id);
+        const connectConfigsRepo = AppDataSource.getRepository(ConnectConfigEntity);
+        const hostConfig = await connectConfigsRepo.findOneBy({ id: data.id });
+        // const hostConfig = await RemoteHosts.get(data.id);
         if (!hostConfig) {
           ws.send(JSON.stringify({
             action: 'data',

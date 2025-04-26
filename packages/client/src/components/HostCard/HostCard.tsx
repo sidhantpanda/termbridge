@@ -17,7 +17,7 @@ export interface HostCardProps {
 }
 
 const HostCard = ({ hostConfig }: HostCardProps) => {
-  const { _id, name, host, username, port } = hostConfig;
+  const { id, name, host, username, port } = hostConfig;
   const [showEditFlow, setShowEditFlow] = React.useState(false);
   const [showDeleteFlow, setShowDeleteFlow] = React.useState(false);
 
@@ -45,20 +45,20 @@ const HostCard = ({ hostConfig }: HostCardProps) => {
           <p className="text-sm text-muted-foreground">Username: {username}</p>
           <p className="text-sm text-muted-foreground">Port: {port}</p>
           {config.tailscaleInfo && (
-            <TailscaleInfo remoteId={_id} />
+            <TailscaleInfo remoteId={id} />
           )}
 
           {config.dockerContainers && (
             <>
               <Separator className="my-3" />
-              <DockerContainerInfo remoteId={_id} />
+              <DockerContainerInfo remoteId={id} />
             </>
           )}
 
         </CardContent>
         <CardFooter className="flex justify-between mt-auto">
           <Button>
-            <Link to={`remotes/${_id}-${name}/terminal`}>
+            <Link to={`remotes/${id}/terminal`}>
               {/* <ShipWheel className="h-4 w-4 mr-2" /> */}
               Connect
             </Link>

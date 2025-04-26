@@ -7,6 +7,7 @@ type PartialConnectConfig = Omit<
 > & DocumentGetResponse;
 
 interface RemoteHost extends PartialConnectConfig {
+  id: string;
   name: string;
   tailscaleIps?: string[];
 }

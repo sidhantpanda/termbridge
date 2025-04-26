@@ -1,18 +1,21 @@
 import { Request, RequestHandler } from 'express';
-import RemoteHosts from '../../couchdb/RemoteHosts';
+import { AppDataSource } from '../../postgres/data-source';
+import { ConnectConfigEntity } from '../../postgres/models/RemoteHost';
 
 const getRemoteById: RequestHandler = async (req: Request, res) => {
-  const remote = await RemoteHosts.get(req.params.id);
-  if (!remote) {
+  // const remote = await RemoteHosts.get(req.params.id);
+  const connectConfigsRepo = AppDataSource.getRepository(ConnectConfigEntity);
+  const existingPg = await connectConfigsRepo.findOneBy({ id: req.params.id });
+  if (!existingPg) {
     res.status(404).send({ message: 'Remote not found' });
     return;
   }
   const toReturn = {
-    _id: remote._id,
-    name: remote.name,
-    host: remote.host,
-    port: remote.port,
-    username: remote.username,
+    id: existingPg.id,
+    name: existingPg.name,
+    host: existingPg.host,
+    port: existingPg.port,
+    username: existingPg.username,
   }
   res.send({ remote: toReturn });
 };

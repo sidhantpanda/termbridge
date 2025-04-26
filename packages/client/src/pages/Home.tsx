@@ -20,7 +20,7 @@ export default function Component() {
       host.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       host.host.includes(searchTerm)
     ).map(host => (
-      <HostCard key={host._id} hostConfig={host} />
+      <HostCard key={host.id} hostConfig={host} />
     ));
 
   return (

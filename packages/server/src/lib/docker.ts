@@ -1,12 +1,19 @@
 import { DockerContainer, RemoteHost } from '@termbridge/common';
 import { Client } from 'ssh2';
-import RemoteHosts from '../couchdb/RemoteHosts';
+import { AppDataSource } from '../postgres/data-source';
+import { ConnectConfigEntity } from '../postgres/models/RemoteHost';
 
 export const getDockerContainers = (id: string): Promise<DockerContainer[]> => {
   return new Promise<DockerContainer[]>(async (resolve, reject) => {
-    const remote = await RemoteHosts.get(id);
+    const connectConfigsRepo = AppDataSource.getRepository(ConnectConfigEntity);
+    const remote = await connectConfigsRepo.findOneBy({ id });
+    // const remote = await RemoteHosts.get(id);
     const conn = new Client();
-    const sshConfig = remote as RemoteHost;
+    if (!remote) {
+      reject(new Error('Remote not found'));
+      return;
+    }
+    const sshConfig = remote;
     const sudoPassword = remote.password;
 
     conn.on('ready', () => {

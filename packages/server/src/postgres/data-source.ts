@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { User } from './models/User';
 import { PG_DB, PG_HOST, PG_PASS, PG_PORT, PG_USER } from '../config';
+import { ConnectConfigEntity } from './models/RemoteHost';
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: PG_DB,
   synchronize: true,
   logging: true,
-  entities: [User],
+  entities: [User, ConnectConfigEntity],
   subscribers: [],
   migrations: [],
 });
