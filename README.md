@@ -4,7 +4,7 @@ Manage terminall access to all your homelab devices from a single web interface.
 
 ## Requirements
 
-You'll need a CouchDB instance running to store terminal credentials. You can use a compose file to run both Termbridge and CouchDB.
+You'll need a Postgres instance running to store terminal credentials. You can use a compose file to run both Termbridge and Postgres.
 
 
 ## Usage
@@ -15,10 +15,10 @@ You'll need a CouchDB instance running to store terminal credentials. You can us
 docker run -d \
   -p 3000:3000 \
   --name termbridge \
-  -e COUCHDB_HOST=you-couch-db-host \
-  -e COUCHDB_PORT=5984 \
-  -e COUCHDB_USER=COUCH_USER \
-  -e COUCHDB_PASS=COUCHDB_PASS \
+  -e PG_HOST=you-postgres-db-host \
+  -e PG_PORT=5432 \
+  -e PG_USER=PG_USER \
+  -e PG_PASS=PG_PASS \
   ghcr.io/sidhantpanda/termbridge:latest
 ```
 
@@ -28,27 +28,28 @@ docker run -d \
 services:
   termbridge:
     container_name: termbridge
-    image: ghcr.io/sidhantpanda/termbridge
+    image: sidhantpanda/termbridge
     restart: unless-stopped
     environment:
-      - COUCHDB_HOST=couchdb
-      - COUCHDB_PORT=5984
-      - COUCHDB_USER=${COUCHDB_USER:-admin}
-      - COUCHDB_PASS=${COUCHDB_PASS:-password}
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=${PG_USER}
+      - PG_PASS=${PG_PASS}
+      - PG_DB=${PG_DB}
     ports:
       - 3000:3000
-
-  couchdb:
-    image: couchdb
-    container_name: couchdb
+  postgres:
+    container_name: postgres
+    image: postgres:17
     restart: unless-stopped
     environment:
-      - COUCHDB_USER=${COUCHDB_USER:-admin}
-      - COUCHDB_PASSWORD=${COUCHDB_PASS:-password}
-    volumes:
-      - ./data/coubchdb:/opt/couchdb/data
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=${PG_DB}
     ports:
-      - 5984:5984
+      - 5432:5432
+    volumes:
+      - ./data/postgresql/data:/var/lib/postgresql/data
 ```
 
 
