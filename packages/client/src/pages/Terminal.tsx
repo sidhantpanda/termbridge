@@ -3,12 +3,20 @@ import TerminalContainer from '../components/Terminal/TerminalContainer';
 import { useNavigate, useParams } from 'react-router-dom';
 import LoggedOut from '../components/Terminal/LoggedOut';
 import Layout from '../Layout';
+import useRemoteById from '@/hooks/useRemoteHostById';
+import { Helmet } from "react-helmet";
 
 const Terminal = () => {
   const { id_host } = useParams();
   const navigate = useNavigate();
   const [isLoggedOut, setIsLoggedOut] = React.useState(false);
   const [id, ...rest] = id_host.split('-');
+  const { remote } = useRemoteById(id);
+
+  let pageTitle = 'Termbridge';
+  if (remote) {
+    pageTitle = `${remote.name} - Termbridge`;
+  }
 
   const navigateToHome = () => {
     navigate('/');
@@ -31,26 +39,33 @@ const Terminal = () => {
     }
   }, [isLoggedOut]);
 
-  if (!isLoggedOut) {
-    return (
-      <TerminalContainer
-        id={id}
-        name={rest.join('-')}
-        h="100vh"
-        w="100vw"
-        onLogout={() => setIsLoggedOut(true)}
+  let pageContents = (
+    <TerminalContainer
+      id={id}
+      name={rest.join('-')}
+      h="100vh"
+      w="100vw"
+      onLogout={() => setIsLoggedOut(true)}
+    />
+  );
+
+  if (isLoggedOut) {
+    pageContents = <Layout>
+      <LoggedOut
+        onHomeRequested={navigateToHome}
+        onReloadTerminalRequested={() => setIsLoggedOut(false)}
       />
-    );
-  } else {
-    return (
-      <Layout>
-        <LoggedOut
-          onHomeRequested={navigateToHome}
-          onReloadTerminalRequested={() => setIsLoggedOut(false)}
-        />
-      </Layout>
-    );
+    </Layout>
   }
+
+  return (
+    <>
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
+      {pageContents}
+    </>
+  )
 };
 
 export default Terminal;
