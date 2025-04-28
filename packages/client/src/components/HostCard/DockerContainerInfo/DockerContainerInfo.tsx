@@ -14,11 +14,13 @@ export const DockerContainerInfo = ({ remoteId }: { remoteId: string }) => {
     return null;
   }
 
+  console.log('DockerContainerInfo', { containers, isFetching, isError, isSuccess });
+
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-1">
         <DockerIcon size={18} />
-        <span className="text-sm font-medium">Docker Containers</span>
+        <span className="text-sm font-medium">Docker Containers{' '}{isSuccess ? `(${containers.length})` : undefined}</span>
       </div>
       {isFetching && (
         <span className="text-sm text-muted-foreground">
